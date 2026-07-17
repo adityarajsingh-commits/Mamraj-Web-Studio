@@ -644,3 +644,19 @@ footer{
         margin:15px 0;
     }
 }
+@media(max-width:768px){
+
+.nav-links{
+    position:absolute;
+    top:80px;
+    left:-100%;
+    width:100%;
+    background:#fff;
+    transition:0.4s ease;
+    flex-direction:column;
+}
+
+.nav-links.active{
+    left:0;
+}
+}
