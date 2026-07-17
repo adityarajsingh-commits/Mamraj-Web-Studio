@@ -37,7 +37,22 @@ window.addEventListener("load", () => {
         icon.classList.add("fa-sun");
     }
 });
+const logoutBtn =
+document.getElementById("logoutBtn");
 
+if(localStorage.getItem("loggedIn") === "true"){
+    logoutBtn.style.display = "block";
+}
+
+logoutBtn.addEventListener("click", () => {
+
+    localStorage.removeItem("loggedIn");
+
+    alert("Logged Out Successfully");
+
+    window.location.reload();
+
+});
 
 // Sticky Navbar Shadow
 
