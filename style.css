@@ -603,51 +603,10 @@ footer{
     }
 
 }
-/* Hamburger */
 .menu-toggle{
     display:none;
-    font-size:28px;
     cursor:pointer;
-    color:#1e1e1e;
-}
-
-/* Mobile */
-@media(max-width:768px){
-
-    .menu-toggle{
-        display: block;
-    }
-
-    .navbar{
-        position: relative;
-    }
-
-    .nav-links{
-        position: absolute;
-        top:80px;
-        left:0;
-        width:100%;
-        background:#fff;
-        flex-direction: column;
-        text-align: center;
-        padding:20px 0;
-        box-shadow:0 10px 30px rgba(0,0,0,0.1);
-
-        display: none;
-    }
-
-    .nav-links.active{
-        display: flex;
-    }
-
-    .nav-links li{
-        margin:15px 0;
-    }
-}
-.menu-toggle{
-    display:none;
     font-size:28px;
-    cursor:pointer;
 }
 
 @media (max-width:768px){
@@ -659,23 +618,11 @@ footer{
     .nav-links{
         display:none;
         flex-direction:column;
-        position:absolute;
-        top:70px;
-        left:0;
         width:100%;
         background:#fff;
-        padding:20px 0;
-        box-shadow:0 5px 20px rgba(0,0,0,0.1);
-        z-index:999;
     }
 
     .nav-links.active{
         display:flex;
     }
-
-    .nav-links li{
-        margin:12px 0;
-        text-align:center;
-    }
-}
 }
