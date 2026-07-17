@@ -604,51 +604,133 @@ footer{
 
 }
 /* Hamburger Menu */
-
 .menu-toggle{
     display:none;
-    font-size:28px;
+    font-size:30px;
     cursor:pointer;
-    color:var(--navy);
+    color:#1E2A5A;
 }
 
-@media (max-width:768px){
+#overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    z-index:998;
+}
 
-    .navbar{
-        position:relative;
-        padding:20px;
-    }
+@media(max-width:768px){
 
-    .menu-toggle{
-        display:block;
-        position:absolute;
-        right:20px;
-        top:22px;
-    }
+.navbar{
 
-    .nav-links{
-        display:none;
-        position:absolute;
-        top:75px;
-        left:0;
-        width:100%;
-        background:#fff;
-        flex-direction:column;
-        text-align:center;
-        padding:20px 0;
-        box-shadow:0 10px 25px rgba(0,0,0,.1);
-        z-index:999;
-    }
+    padding:18px 20px;
 
-    .nav-links.active{
-        display:flex;
-    }
+}
 
-    .nav-links li{
-        margin:15px 0;
-    }
+.logo{
 
-    .hero h1{
-        font-size:2rem;
-    }
+    font-size:28px;
+
+}
+
+.menu-toggle{
+
+    display:block;
+
+    z-index:1001;
+
+}
+
+.nav-links{
+
+    position:fixed;
+
+    top:0;
+
+    right:-320px;
+
+    width:300px;
+
+    height:100vh;
+
+    background:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:30px;
+
+    gap:10px;
+
+    transition:.35s;
+
+    z-index:999;
+
+    box-shadow:-10px 0 30px rgba(0,0,0,.2);
+
+}
+
+.nav-links.active{
+
+    right:0;
+
+}
+
+#overlay.active{
+
+    display:block;
+
+}
+
+.close-menu{
+
+    text-align:right;
+
+    margin-bottom:20px;
+
+    list-style:none;
+
+}
+
+.close-menu i{
+
+    font-size:30px;
+
+    cursor:pointer;
+
+}
+
+.nav-links li{
+
+    list-style:none;
+
+}
+
+.nav-links a{
+
+    display:block;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+    color:#1E2A5A;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.nav-links a:hover{
+
+    background:#F5F5F5;
+
+    color:#C58B73;
+
+}
+
 }
