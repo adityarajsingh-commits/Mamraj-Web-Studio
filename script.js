@@ -283,7 +283,7 @@ document.addEventListener("mousemove",(e)=>{
     cursor.style.top = e.clientY + "px";
 
 });
-emailjs.init("YOUR_PUBLIC_KEY");
+emailjs.init("-lpDLEthvMF803enK");
 
 document
 .getElementById("contactForm")
@@ -292,7 +292,7 @@ document
 e.preventDefault();
 
 emailjs.send(
-"YOUR_SERVICE_ID",
+"service_55pjnkk",
 "YOUR_TEMPLATE_ID",
 {
 from_name:
