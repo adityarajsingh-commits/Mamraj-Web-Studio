@@ -355,3 +355,30 @@ footer{
         padding:80px 6%;
     }
 }
+.auth-container{
+    width:400px;
+    margin:100px auto;
+    padding:30px;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.auth-container input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.auth-container button{
+    width:100%;
+    padding:12px;
+    background:#6c63ff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
