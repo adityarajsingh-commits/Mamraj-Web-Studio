@@ -241,3 +241,37 @@ window.addEventListener("load", () => {
 
     console.log("MamRaj Web Studio Loaded Successfully 🚀");
 });
+function addToCart(name, price){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({
+        name:name,
+        price:price
+    });
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    updateCartCount();
+
+    alert(name + " added to cart");
+}
+
+function updateCartCount(){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    let count =
+    document.getElementById("cart-count");
+
+    if(count){
+        count.innerText = cart.length;
+    }
+}
+
+updateCartCount();
