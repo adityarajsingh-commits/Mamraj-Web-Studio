@@ -323,35 +323,17 @@ console.log(error);
 });
 
 });
-const menuToggle=document.getElementById("menu-toggle");
+const menuToggle = document.getElementById("menu-toggle");
+const navLinks = document.getElementById("nav-links");
 
-const navLinks=document.getElementById("nav-links");
+menuToggle.addEventListener("click", () => {
 
-const closeMenu=document.getElementById("close-menu");
+    navLinks.classList.toggle("active");
 
-const overlay=document.getElementById("overlay");
+    if(navLinks.classList.contains("active")){
+        menuToggle.innerHTML='<i class="fas fa-times"></i>';
+    }else{
+        menuToggle.innerHTML='<i class="fas fa-bars"></i>';
+    }
 
-menuToggle.onclick=function(){
-
-    navLinks.classList.add("active");
-
-    overlay.classList.add("active");
-
-}
-
-closeMenu.onclick=function(){
-
-    navLinks.classList.remove("active");
-
-    overlay.classList.remove("active");
-
-}
-
-overlay.onclick=function(){
-
-    navLinks.classList.remove("active");
-
-    overlay.classList.remove("active");
-
-}
-
+});
