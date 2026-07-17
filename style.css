@@ -644,19 +644,26 @@ footer{
         margin:15px 0;
     }
 }
-@media(max-width:768px){
-
-.nav-links{
-    position:absolute;
-    top:80px;
-    left:-100%;
-    width:100%;
-    background:#fff;
-    transition:0.4s ease;
-    flex-direction:column;
+.menu-toggle{
+    display:none;
+    cursor:pointer;
+    font-size:28px;
 }
 
-.nav-links.active{
-    left:0;
-}
+@media (max-width:768px){
+
+    .menu-toggle{
+        display:block;
+    }
+
+    .nav-links{
+        display:none;
+        flex-direction:column;
+        width:100%;
+        background:#fff;
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
 }
