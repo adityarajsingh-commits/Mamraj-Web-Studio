@@ -323,24 +323,35 @@ console.log(error);
 });
 
 });
-const menuToggle = document.getElementById("menu-toggle");
-const navLinks = document.getElementById("nav-links");
+const menuToggle=document.getElementById("menu-toggle");
 
-menuToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-});
-document.addEventListener("DOMContentLoaded", function(){
+const navLinks=document.getElementById("nav-links");
 
-    const menuToggle =
-    document.getElementById("menu-toggle");
+const closeMenu=document.getElementById("close-menu");
 
-    const navLinks =
-    document.getElementById("nav-links");
+const overlay=document.getElementById("overlay");
 
-    menuToggle.addEventListener("click", function(){
+menuToggle.onclick=function(){
 
-        navLinks.classList.toggle("active");
+    navLinks.classList.add("active");
 
-    });
+    overlay.classList.add("active");
 
-});
+}
+
+closeMenu.onclick=function(){
+
+    navLinks.classList.remove("active");
+
+    overlay.classList.remove("active");
+
+}
+
+overlay.onclick=function(){
+
+    navLinks.classList.remove("active");
+
+    overlay.classList.remove("active");
+
+}
+
