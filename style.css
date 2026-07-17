@@ -28,15 +28,25 @@ section{
 .hero-content{
     max-width:800px;
 }
-
+.hero img{
+    width:100%;
+    height:auto;
+    display:block;
+}
 .work-grid,
 .pricing-container{
     display:flex;
-    gap:30px;
     justify-content:center;
+    align-items:stretch;
     flex-wrap:wrap;
+    gap:25px;
 }
 
+.price-card{
+    width:300px;
+    padding:30px;
+    text-align:center;
+}
 .card,
 .price-card,
 .testimonial-box{
@@ -66,4 +76,20 @@ section{
 footer{
     text-align:center;
     padding:20px;
+}
+@media(max-width:768px){
+
+.nav-links{
+    flex-direction:column;
+}
+
+.card,
+.price-card{
+    width:100%;
+}
+
+section{
+    padding:60px 20px;
+}
+
 }
