@@ -112,17 +112,17 @@ header{
 button{
     display:inline-block;
     padding:14px 30px;
-    border:none;
+    border: none;
     border-radius:50px;
     background:linear-gradient(45deg,#00e5ff,#2563eb);
-    color:white;
-    text-decoration:none;
-    cursor:pointer;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
     transition:.4s;
 }
 
-.btn:hover,
-button:hover{
+.btn: hover,
+button: hover{
     transform:translateY(-5px);
     box-shadow:0 0 25px #00e5ff;
 }
@@ -138,7 +138,7 @@ section{
 }
 
 section h2{
-    text-align:center;
+    text-align: center;
     font-size:2.5rem;
     margin-bottom:40px;
 }
@@ -146,9 +146,9 @@ section h2{
 /* ABOUT */
 
 .about p{
-    text-align:center;
+    text-align: center;
     max-width:900px;
-    margin:auto;
+    margin: auto;
     font-size:18px;
     color:#ddd;
 }
@@ -156,22 +156,22 @@ section h2{
 /* WORK */
 
 .work-grid{
-    display:flex;
-    justify-content:center;
+    display: flex;
+    justify-content: center;
     gap:30px;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
 }
 
 .card{
     width:350px;
-    overflow:hidden;
+    overflow: hidden;
     border-radius:20px;
     background:rgba(255,255,255,.08);
     backdrop-filter:blur(10px);
     transition:.4s;
 }
 
-.card:hover{
+.card: hover{
     transform:translateY(-10px);
     box-shadow:0 0 30px #00e5ff;
 }
@@ -179,16 +179,16 @@ section h2{
 .card img{
     width:100%;
     height:220px;
-    object-fit:cover;
+    object-fit: cover;
     transition:.5s;
 }
 
-.card:hover img{
+.card: hover img{
     transform:scale(1.08);
 }
 
 .card h3{
-    text-align:center;
+    text-align: center;
     padding:15px;
 }
 
@@ -229,7 +229,7 @@ section h2{
 /* TESTIMONIALS */
 
 .testimonials{
-    text-align:center;
+    text-align: center;
 }
 
 .testimonial-box{
@@ -259,7 +259,7 @@ section h2{
 
 .contact form{
     max-width:700px;
-    margin:auto;
+    margin: auto;
 }
 
 .contact input,
@@ -267,10 +267,10 @@ section h2{
     width:100%;
     padding:15px;
     margin:10px 0;
-    border:none;
+    border: none;
     border-radius:12px;
     background:rgba(255,255,255,.1);
-    color:white;
+    color: white;
 }
 
 .contact textarea{
@@ -295,7 +295,7 @@ section h2{
 }
 
 .auth-container h2{
-    text-align:center;
+    text-align: center;
     margin-bottom:20px;
 }
 
@@ -303,12 +303,12 @@ section h2{
     width:100%;
     padding:14px;
     margin:10px 0;
-    border:none;
+    border: none;
     border-radius:10px;
 }
 
 .auth-container p{
-    text-align:center;
+    text-align: center;
     margin-top:15px;
 }
 
@@ -319,8 +319,8 @@ section h2{
 /* CART */
 
 #cart-count{
-    background:red;
-    color:white;
+    background: red;
+    color: white;
     padding:2px 8px;
     border-radius:50%;
     font-size:12px;
@@ -342,7 +342,7 @@ section h2{
 /* FOOTER */
 
 footer{
-    text-align:center;
+    text-align:  center;
     padding:30px;
     margin-top:40px;
     background:rgba(255,255,255,.08);
@@ -357,13 +357,13 @@ footer{
 }
 
 .navbar{
-    flex-direction:column;
+    flex-direction: column;
     gap:15px;
 }
 
 .nav-links{
-    flex-wrap:wrap;
-    justify-content:center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card,
@@ -375,4 +375,25 @@ section{
     padding:80px 20px;
 }
 
+}
+/* Custom Cursor */
+
+body{
+    cursor: none;
+}
+
+.cursor{
+    width:20px;
+    height:20px;
+    border:2px solid #00e5ff;
+    border-radius:50%;
+    position: fixed;
+    pointer-events: none;
+    transform:translate(-50%,-50%);
+    z-index:9999;
+    transition: transform .1s ease;
+    box-shadow:
+        0 0 10px #00e5ff,
+        0 0 20px #00e5ff,
+        0 0 30px #00e5ff;
 }
