@@ -600,6 +600,9 @@ footer{
     }
 
 }
+.menu-toggle{
+    display: none;
+}
 /* Hamburger Menu */
 @media(max-width:768px){
 
