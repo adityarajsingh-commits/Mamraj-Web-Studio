@@ -49,14 +49,24 @@ header{
     z-index:1000;
 }
 
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 8%;
-    background:#fff;
-    border-bottom:1px solid var(--border);
-    position:relative;
+/* Navbar ko default state mein chhupana */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  
+  /* Smooth animation ke liye transition */
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  
+  /* 90% upar bhej dena taaki halka sa border niche dikhta rahe cursor lane ke liye */
+  transform: translateY(-90%); 
+}
+
+/* Jaise hi mouse poore navbar ke area par ya top screen par aaye */
+.navbar:hover {
+  transform: translateY(0);
 }
 
 .logo{
