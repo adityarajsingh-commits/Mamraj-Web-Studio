@@ -544,7 +544,7 @@ function payWithRazorpay() {
 
     // 3. Razorpay ki settings configure karein
     var options = {
-        "key": "YOUR_RAZORPAY_KEY_ID", // Yahan apni Razorpay Dashboard se mili Test Key dalein
+        "key": "rzp_test_TF2luj9K5VkNZJ", // Yahan apni Razorpay Dashboard se mili Test Key dalein
         "amount": amountInPaise, 
         "currency": "INR",
         "name": "MamRaj Web Studio",
