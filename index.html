@@ -163,6 +163,56 @@
             </div>
 
         </div>
+        <!-- 1. Include the official Razorpay Checkout SDK -->
+<script src="RAZORPAY_CHECKOUT_SDK_URL"></script>
+
+<!-- 2. Payment trigger button -->
+<button id="rzp-button" class="payment-btn">Pay with Razorpay</button>
+
+<script type="module">
+// Import your Firebase modules
+import { getDatabase, ref, push, set } from "FIREBASE_DATABASE_SDK_URL";
+
+const db = getDatabase();
+
+document.getElementById('rzp-button').onclick = function(e) {
+  const options = {
+    "key": "YOUR_RAZORPAY_KEY_ID", // Find this in your Razorpay Dashboard Settings
+    "amount": "1999900", // Amount in paise (₹19,999)
+    "currency": "INR",
+    "name": "MamRaj Web Studio",
+    "description": "Premium Package Checkout",
+    "image": "LOGO_IMAGE_URL",
+    "handler": function (response) {
+      // Payment Successful. Save receipt details in Realtime Database.
+      const newOrderRef = push(ref(db, 'orders'));
+      set(newOrderRef, {
+        orderId: newOrderRef.key,
+        razorpayPaymentId: response.razorpay_payment_id,
+        amount: 19999,
+        package: "Premium",
+        timestamp: Date.now(),
+        status: "Paid (Pending Manual Verification)" 
+      }).then(() => {
+        alert("Payment Recorded! Payment ID: " + response.razorpay_payment_id);
+      });
+    },
+    "prefill": {
+      "name": "Customer Name",
+      "email": "customer@example.com",
+      "contact": "9999999999"
+    },
+    "theme": {
+      "color": "#3498db" // Matches your blue website theme
+    }
+  };
+
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+  e.preventDefault();
+}
+</script>
+
     </section>
 
     <!-- Testimonials -->
