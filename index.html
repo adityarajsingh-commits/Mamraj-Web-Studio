@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+      <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    button { background-color: #3498db; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; width: 100%; font-size: 16px; }
+    button:hover { background-color: #2980b9; }
+    .review-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 10px; }
+    .stars { color: #f1c40f; font-size: 18px; }
+    .stats { font-size: 22px; font-weight: bold; margin-bottom: 20px; text-align: center; color: #2c3e50; }
+  </style>
    
 </head>
 <body>
@@ -195,6 +206,30 @@
             </p>
             <h4>- Diksha </h4>
         </div>
+        <!-- Live Stats -->
+    <div id="stats" class="stats">Loading average rating...</div>
+
+    <!-- Review Form -->
+    <form id="review-form">
+      <h3>Share Your Feedback</h3>
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email (Optional)">
+      <select id="rating" required>
+        <option value="">Give Stars (1 to 5)</option>
+        <option value="5">★★★★★ (5 Stars)</option>
+        <option value="4">★★★★☆ (4 Stars)</option>
+        <option value="3">★★★☆☆ (3 Stars)</option>
+        <option value="2">★★☆☆☆ (2 Stars)</option>
+        <option value="1">★☆☆☆☆ (1 Star)</option>
+      </select>
+      <textarea id="message" rows="4" placeholder="Write your review here..." required></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
+
+    <!-- Approved Reviews List -->
+    <h3>Customer Stories</h3>
+    <div id="reviews-list"></div>
+  </div>
     </section>
 
     <!-- Contact -->
@@ -263,5 +298,6 @@
 <script src="script.js"></script>  
     <!-- Analytics Tracker Script -->
 <script type="module" src="tracker.js"></script>
+<script type="module" src="review.js"></script>
 </body>
 </html>
