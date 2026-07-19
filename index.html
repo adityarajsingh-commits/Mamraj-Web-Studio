@@ -163,6 +163,8 @@
             </div>
 
         </div>
+
+        
         <!-- 1. Include the official Razorpay Checkout SDK -->
 <script src="RAZORPAY_CHECKOUT_SDK_URL"></script>
 
@@ -215,71 +217,74 @@ document.getElementById('rzp-button').onclick = function(e) {
 
     </section>
 
-    <!-- Testimonials -->
-    <section id="testimonials" class="testimonials">
+   <!-- Dynamic Live Statistics -->
+        <section class="stats-section card">
+            <h2>Overall Rating Summary</h2>
+            <div class="stats-grid">
+                <div class="stats-score-box">
+                    <div class="big-score" id="avg-rating">0.0</div>
+                    <div class="stars-outer">
+                        <div class="stars-inner" id="avg-stars-fill"></div>
+                    </div>
+                    <p id="total-reviews-count">Based on 0 reviews</p>
+                </div>
+                <div class="stats-bars" id="stats-bars-container">
+                    <!-- Dynamic breakdown rows (5 to 1 star) will generate here -->
+                </div>
+            </div>
+        </section>
 
-        <h2>What Clients Say</h2>
-        <div class="testimonial-box">
-            <p>
-                "Amazing design and excellent support."
-            </p>
-            <h4>- Mamta Raj Singh </h4>
-        </div>
-          <div class="testimonial-box">
-            <p>
-                "MamRaj delivered our website professionally and on time."
-            </p>
-            <h4>- Ritesh Kumar</h4>
-        </div>
-        <div class="testimonial-box">
-            <p>
-                "MamRaj delivered our website professionally and on time."
-            </p>
-            <h4>- Shipra</h4>
-        </div>
-        <div class="testimonial-box">
-            <p>
-                "MamRaj delivered our website professionally and on time."
-            </p>
-            <h4>- Rajesh Kumar</h4>
-        </div>
+        <!-- Submit/Edit Form Section -->
+        <section class="form-section card">
+            <h2 id="form-title">Write a Review</h2>
+            <form id="review-form">
+                <input type="hidden" id="edit-review-id">
+                <div class="form-group">
+                    <label for="review-name">Full Name *</label>
+                    <input type="text" id="review-name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="review-email">Email Address (Optional - private)</label>
+                        <input type="email" id="review-email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="review-photo">Avatar URL (Optional)</label>
+                        <input type="url" id="review-photo" placeholder="https://domain.com/avatar.jpg">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Select Rating *</label>
+                    <div class="star-rating-selector" id="star-selector">
+                        <span class="star-btn" data-value="1">★</span>
+                        <span class="star-btn" data-value="2">★</span>
+                        <span class="star-btn" data-value="3">★</span>
+                        <span class="star-btn" data-value="4">★</span>
+                        <span class="star-btn" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating-value" required value="">
+                </div>
+                <div class="form-group">
+                    <label for="review-message">Your Review *</label>
+                    <textarea id="review-message" required placeholder="Share your experience working with us..."></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Submit Review</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-edit-btn" style="display: none;">Cancel</button>
+                </div>
+                <div id="form-feedback" class="feedback-msg"></div>
+            </form>
+        </section>
 
-        <div class="testimonial-box">
-            <p>
-                "Amazing design and excellent support."
-            </p>
-            <h4>- Piyush Vidyarthi</h4>
-        </div>
-                   <div class="testimonial-box">
-            <p>
-                "Amazing design and excellent support."
-            </p>
-            <h4>- Diksha </h4>
-        </div>
-        <!-- Live Stats -->
-    <div id="stats" class="stats">Loading average rating...</div>
+        <!-- Approved Reviews Feed -->
+        <section class="reviews-feed-section">
+            <h2>What Our Clients Say</h2>
+            <div class="reviews-list" id="reviews-list">
+                <!-- Dynamically populated reviews -->
+            </div>
+        </section>
+    </div>
 
-    <!-- Review Form -->
-    <form id="review-form">
-      <h3>Share Your Feedback</h3>
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="email" id="email" placeholder="Your Email (Optional)">
-      <select id="rating" required>
-        <option value="">Give Stars (1 to 5)</option>
-        <option value="5">★★★★★ (5 Stars)</option>
-        <option value="4">★★★★☆ (4 Stars)</option>
-        <option value="3">★★★☆☆ (3 Stars)</option>
-        <option value="2">★★☆☆☆ (2 Stars)</option>
-        <option value="1">★☆☆☆☆ (1 Star)</option>
-      </select>
-      <textarea id="message" rows="4" placeholder="Write your review here..." required></textarea>
-      <button type="submit">Submit Review</button>
-    </form>
-
-    <!-- Approved Reviews List -->
-    <h3>Customer Stories</h3>
-    <div id="reviews-list"></div>
-  </div>
     </section>
 
     <!-- Contact -->
