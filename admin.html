@@ -3,58 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MamRaj Web Studio - Analytics Admin</title>
-    <link rel="stylesheet" href="admin.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Reviews Moderation Dashboard - MamRaj Web Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: #f8fafc;
+            font-weight: 700;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        .status-approved { background-color: #e8f5e9; color: var(--success); }
+        .status-pending { background-color: #fff3e0; color: var(--pending); }
+        .status-rejected { background-color: #ffebee; color: var(--danger); }
+        .row-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>MamRaj Analytics Real-Time Dashboard</h1>
-        <div id="live-indicator"><span class="dot"></span> LIVE</div>
-    </header>
-
-    <main class="dashboard-grid">
-        <!-- Metric Cards -->
-        <div class="card highlight">
-            <h3>Live Online Users</h3>
-            <p id="live-users">0</p>
-        </div>
-        <div class="card">
-            <h3>Total Page Views</h3>
-            <p id="total-pvs">0</p>
-        </div>
-        <div class="card">
-            <h3>Total Unique Visitors</h3>
-            <p id="unique-visitors">0</p>
-        </div>
-        <div class="card">
-            <h3>Returning Visitors</h3>
-            <p id="returning-visitors">0</p>
-        </div>
-        <div class="card">
-            <h3>Today's Visitors</h3>
-            <p id="today-visitors">0</p>
-        </div>
-        <div class="card">
-            <h3>This Week's Visitors</h3>
-            <p id="week-visitors">0</p>
+    <div class="container" style="max-width: 1200px;">
+        <div class="dashboard-header">
+            <div>
+                <h1>Admin Moderation Dashboard</h1>
+                <p>Manage, Moderate and Curate Client Reviews</p>
+            </div>
+            <a href="index.html" class="btn btn-secondary">Go to Website</a>
         </div>
 
-        <!-- Charts Container -->
-        <div class="card chart-card full-width">
-            <h3>Visitor Locations (Countries)</h3>
-            <canvas id="countryChart"></canvas>
-        </div>
-        <div class="card chart-card">
-            <h3>Device Types</h3>
-            <canvas id="deviceChart"></canvas>
-        </div>
-        <div class="card chart-card">
-            <h3>Browsers Used</h3>
-            <canvas id="browserChart"></canvas>
-        </div>
-    </main>
+        <!-- Filter, Sort and Search Controls -->
+        <section class="card">
+            <h2>Filter & Moderation Tools</h2>
+            <div class="filters-container">
+                <input type="text" id="admin-search" class="search-input-field" placeholder="Search by name, email, review content...">
+                
+                <select id="filter-status">
+                    <option value="all">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
 
-    <script type="module" src="admin.js"></script>
+                <select id="filter-rating">
+                    <option value="all">All Ratings</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                </select>
+
+                <select id="sort-by">
+                    <option value="newest">Newest First</option>
+                    <option value="highest-rating">Highest Rating</option>
+                    <option value="lowest-rating">Lowest Rating</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Dynamic Reviews Admin Management Table -->
+        <section class="card">
+            <h2>All Reviews Under Management</h2>
+            <div class="admin-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User details</th>
+                            <th>Rating</th>
+                            <th>Review Message</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body">
+                        <!-- Populated programmatically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="script.js"></script>
+    <script type="module" src="admin-reviews.js"></script>
 </body>
 </html>
