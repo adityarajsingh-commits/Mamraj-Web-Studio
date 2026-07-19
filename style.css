@@ -19,7 +19,7 @@
     #D9A18B 0%,
     #C58B73 35%,
     #7A5A7A 70%,
-    #1E2A5A 100-percent
+    #1E2A5A 100%
     );
 }
 
@@ -38,7 +38,7 @@ body{
 }
 
 /* ==========================================================================
-   NAVBAR (With Auto-Hiding Scroll/Hover Feature)
+   NAVBAR (Auto-Hiding Smooth Slide Animation)
    ========================================================================== */
 
 header{
@@ -49,7 +49,6 @@ header{
     z-index:1000;
 }
 
-/* Navbar default state mein screen se 90% upar chhupi rahegi */
 .navbar {
     position: fixed;
     top: 0;
@@ -62,15 +61,10 @@ header{
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    
-    /* Smooth animation ke liye transition */
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    
-    /* 90% upar bhej rahe hain taaki halka sa border niche dikhta rahe cursor lane ke liye */
     transform: translateY(-90%); 
 }
 
-/* Jaise hi mouse top screen par aaye, navbar smooth niche slide karegi */
 .navbar:hover {
     transform: translateY(0);
 }
@@ -104,7 +98,6 @@ header{
     color:var(--rose);
 }
 
-/* Premium Admin Button Look */
 .admin-btn {
     background: linear-gradient(135deg, #1E2A5A 0%, #7A5A7A 100%);
     color: white !important;
@@ -324,61 +317,96 @@ section h2{
 }
 
 /* ==========================================================================
-   REVIEW LAYOUT SYSTEM (Desktop Side-By-Side Alignment Fix)
-   ========================================================================= */
+   💥 ULTIMATE FIXED REVIEW LAYOUT (Side-by-Side Left to Right Grid)
+   ========================================================================== */
 
-/* Mobile & Default State (Ek ke niche ek card show hoga) */
+/* Main Review Container Outer Shell */
 .review-layout-desktop {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 90% !important;
+    max-width: 1200px !important;
+    margin: 50px auto !important;
+    padding: 0 !important;
 }
 
-/* Section individual layouts */
-.stats-section, .form-section {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,.05);
+/* Fixing the static 350px width glitch from .card class on sections */
+.review-layout-desktop .stats-section, 
+.review-layout-desktop .form-section {
+    width: 100% !important;   /* Force karke width auto grid par set ki */
+    max-width: 100% !important;
+    background: #ffffff !important;
+    padding: 35px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
+    box-sizing: border-box !important;
+    display: block !important;
 }
 
-.stats-grid {
+/* Dynamic Live Star Selector System Formatting */
+.star-rating-selector {
+    display: flex;
+    gap: 8px;
+    font-size: 30px;
+    color: #ccc;
+    margin: 10px 0;
+}
+.star-btn {
+    cursor: pointer;
+    transition: 0.2s;
+}
+.star-btn.active, .star-btn:hover {
+    color: #f1c40f;
+}
+
+/* 💻 BADI SCREEN/DESKTOP VIEW (Yahan layout full left to right spread hoga) */
+@media (min-width: 850px) {
+    .review-layout-desktop {
+        flex-direction: row !important; /* Force side-by-side alignment */
+        align-items: stretch !important;  /* Dono cards ki height barabar rahegi */
+        justify-content: space-between !important;
+        gap: 40px !important;
+    }
+
+    /* Left Section (Overall Rating Summary) - Takes 42% space */
+    .review-layout-desktop .stats-section {
+        flex: 4.2 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Right Section (Form Editor Layout) - Takes 5.8 ratio space */
+    .review-layout-desktop .form-section {
+        flex: 5.8 !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/* Form Row Helper Elements */
+.form-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.form-group {
+    flex: 1;
+    min-width: 200px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
+    margin-bottom: 15px;
 }
-
-.big-score {
-    font-size: 4rem;
-    font-weight: 700;
+.form-group label {
+    font-weight: 500;
     color: var(--navy);
+    margin-bottom: 6px;
+    font-size: 14px;
 }
-
-/* 💻 LAPTOP/DESKTOP VIEW (Aamne-Samne Set Karega automatically) */
-@media (min-width: 768px) {
-    .review-layout-desktop {
-        flex-direction: row;         /* Dono boxes ko left-right row me lane ke liye */
-        align-items: flex-start;     /* Dono elements top line se barabar level par rhengi */
-        justify-content: space-between;
-        gap: 40px;
-    }
-
-    /* Left Block (Overall Rating Summary) - 40% Space width allocation */
-    .review-layout-desktop .stats-section {
-        flex: 4;
-        margin-bottom: 0;
-    }
-
-    /* Right Block (Write a Review Form) - 60% Space width allocation */
-    .review-layout-desktop .form-section {
-        flex: 6;
-        margin-bottom: 0;
-    }
+.form-group input, .form-group textarea {
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
 }
 
 /* CHECKOUT & CART LAYOUTS */
@@ -496,10 +524,10 @@ footer{
 
 /* ==========================================================================
    RESPONSIVE GLOBAL MEDIA QUERIES & MOBILE TOGGLES
-   ========================================================================= */
+   ========================================================================== */
 @media(max-width:768px){
     .navbar{
-        transform: translateY(0) !important; /* Mobile view par hide nahi hoga, hamesha dikhega */
+        transform: translateY(0) !important;
         flex-direction:row;
         justify-content:space-between;
         align-items:center;
@@ -540,8 +568,9 @@ footer{
         font-size:2.3rem;
     }
 
+    /* Normal grids revert to full width on mobile */
     .card, .price-card{
-        width:100%;
+        width:100% !important;
     }
 
     section{
