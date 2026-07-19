@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MamRaj Web Studio</title>
+    <title>MamRaj Web Studio - Home</title>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f7f6; }
+        .container { text-align: center; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
 </head>
-
 <body>
+      <div class="container">
+        <h1>Welcome to MamRaj Web Studio</h1>
+        <p>Your visit is being securely recorded in real time.</p>
+        <p><a href="admin.html">View Admin Dashboard</a></p>
+    </div>
 
     <!-- Navbar -->
     <header>
@@ -255,7 +263,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 
-<script src="script.js"></script>
-<script src="visitor.js"></script>           
+<script src="script.js"></script>  
+    <!-- Analytics Tracker Script -->
+<script type="module" src="tracker.js"></script>
 </body>
 </html>
