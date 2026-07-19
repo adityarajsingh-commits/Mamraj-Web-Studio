@@ -525,3 +525,49 @@ window.addEventListener("load", () => {
     console.log("MamRaj Web Studio Ready 🚀");
 
 });
+function payWithRazorpay() {
+    // 1. User ki bhari hui details uthao
+    const name = document.getElementById('userName').value;
+    const email = document.getElementById('userEmail').value;
+    const phone = document.getElementById('userPhone').value;
+    
+    // Agar details khali hain to aage mat badho
+    if (!name || !email || !phone) {
+        alert("Kripya saari billing details bharein!");
+        return;
+    }
+
+    // 2. Amount uthao (Razorpay humesha paise paise me leta hai, isliye * 100)
+    // Agar total ₹19998 hai, to Razorpay ke liye 1999800 hoga.
+    const totalAmountInRupees = 19998; 
+    const amountInPaise = totalAmountInRupees * 100;
+
+    // 3. Razorpay ki settings configure karein
+    var options = {
+        "key": "YOUR_RAZORPAY_KEY_ID", // Yahan apni Razorpay Dashboard se mili Test Key dalein
+        "amount": amountInPaise, 
+        "currency": "INR",
+        "name": "MamRaj Web Studio",
+        "description": "Professional Website Development Service",
+        "image": "https://mamrajwebstudio.in/logo.png", // Aapka logo URL
+        "handler": function (response){
+            // Jab payment SUCCESS ho jaye tab yeh code chalega
+            alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+            
+            // Yahan aap user ko thank-you page par bhej sakte hain ya cart khali kar sakte hain
+            window.location.href = "/success.html";
+        },
+        "prefill": {
+            "name": name,
+            "email": email,
+            "contact": phone
+        },
+        "theme": {
+            "color": "#2b1055" // Aapki website ka primary dark color
+        }
+    };
+
+    // 4. Razorpay ka popup kholo
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
