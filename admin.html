@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamRaj Web Studio - Analytics Admin</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>MamRaj Analytics Real-Time Dashboard</h1>
+        <div id="live-indicator"><span class="dot"></span> LIVE</div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Metric Cards -->
+        <div class="card highlight">
+            <h3>Live Online Users</h3>
+            <p id="live-users">0</p>
+        </div>
+        <div class="card">
+            <h3>Total Page Views</h3>
+            <p id="total-pvs">0</p>
+        </div>
+        <div class="card">
+            <h3>Total Unique Visitors</h3>
+            <p id="unique-visitors">0</p>
+        </div>
+        <div class="card">
+            <h3>Returning Visitors</h3>
+            <p id="returning-visitors">0</p>
+        </div>
+        <div class="card">
+            <h3>Today's Visitors</h3>
+            <p id="today-visitors">0</p>
+        </div>
+        <div class="card">
+            <h3>This Week's Visitors</h3>
+            <p id="week-visitors">0</p>
+        </div>
+
+        <!-- Charts Container -->
+        <div class="card chart-card full-width">
+            <h3>Visitor Locations (Countries)</h3>
+            <canvas id="countryChart"></canvas>
+        </div>
+        <div class="card chart-card">
+            <h3>Device Types</h3>
+            <canvas id="deviceChart"></canvas>
+        </div>
+        <div class="card chart-card">
+            <h3>Browsers Used</h3>
+            <canvas id="browserChart"></canvas>
+        </div>
+    </main>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
