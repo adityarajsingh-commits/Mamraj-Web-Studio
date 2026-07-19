@@ -17,10 +17,22 @@
 
 <h2 id="total"></h2>
 
-<button onclick="checkout()">
-Proceed To Checkout
-</button>
+<div class="checkout-container">
+    <!-- Billing Details Form -->
+    <div class="billing-form">
+        <h3>Billing Details</h3>
+        <input type="text" id="userName" placeholder="Apna Pura Naam" required>
+        <input type="email" id="userEmail" placeholder="Apna Email Address" required>
+        <input type="tel" id="userPhone" placeholder="Mobile Number" required>
+    </div>
 
+    <!-- Total and Button -->
+    <div class="checkout-summary">
+        <h2>Total: ₹<span id="cart-total-val">19998</span></h2>
+        <!-- Purane button par onclick lagayenge -->
+        <button id="pay-button" class="btn-checkout" onclick="payWithRazorpay()">Pay Now Securely</button>
+    </div>
+</div>
 </div>
 
 <script src="cart.js"></script>
