@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MamRaj Web Studio - Home</title>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- Load Razorpay Standard Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -18,6 +20,9 @@
         .review-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 10px; }
         .stars { color: #f1c40f; font-size: 18px; }
         .stats { font-size: 22px; font-weight: bold; margin-bottom: 20px; text-align: center; color: #2c3e50; }
+        .star-rating-selector { margin-bottom: 15px; font-size: 24px; }
+        .star-btn { cursor: pointer; color: #ccc; transition: color 0.2s; }
+        .star-btn.active { color: #f1c40f; }
     </style>
 </head>
 <body>
@@ -122,7 +127,7 @@
                 <h3>Starter</h3>
                 <h1>₹4,999</h1>
                 <p>Basic Business Website</p>
-                <button onclick="addToCart('Starter Website',5999)">Add To Cart</button>
+                <button onclick="addToCart('Starter Website',4999)">Add To Cart</button>
             </div>
 
             <div class="price-card featured">
@@ -141,34 +146,27 @@
         </div>
 
         <div class="cart-container">
-    <h1>Your Cart</h1>
-    <div id="cart-items"></div>
-    <h2 id="total"></h2>
+            <h1>Your Cart</h1>
+            <div id="cart-items"></div>
+            <h2 id="total"></h2>
 
-    <div class="checkout-container">
-        <div class="billing-form">
-            <h3>Billing Details</h3>
-            <input type="text" id="userName" placeholder="Full Name" required>
-            <input type="email" id="userEmail" placeholder="Email Address" required>
-            <input type="tel" id="userPhone" placeholder="Mobile Number" required>
+            <div class="checkout-container">
+                <div class="billing-form">
+                    <h3>Billing Details</h3>
+                    <input type="text" id="userName" placeholder="Full Name" required>
+                    <input type="email" id="userEmail" placeholder="Email Address" required>
+                    <input type="tel" id="userPhone" placeholder="Mobile Number" required>
+                </div>
+                <div class="checkout-summary">
+                    <h2>Total: ₹<span id="cart-total-val">0</span></h2>
+                    <!-- Fixed Trigger Button connected to cart.js -->
+                    <button id="pay-button" onclick="checkout(event)" style="padding: 10px 20px; background-color: #3399cc; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">Pay Now Securely</button>
+                </div>
+            </div>
         </div>
-        <div class="checkout-summary">
-            <h2>Total: ₹<span id="cart-total-val">0</span></h2>
-            <!-- Replaced payment link with checkout button -->
-            <button id="pay-button" style="padding: 10px 20px; background-color: #3399cc; color: white; border: none; cursor: pointer; border-radius: 4px;">Pay Now Securely</button>
-        </div>
-    </div>
-</div>
-          const rzp1 = new Razorpay(options);
-          rzp1.open();
-          e.preventDefault();
-        }
-        </script>
     </section>
 
-    <!-- ==========================================================================
-         REVIEW WRAPPER SECTION (Desktop side-by-side alignment container starts)
-         ========================================================================== -->
+    <!-- Review Section Desktop Layout Container -->
     <div class="review-layout-desktop">
 
         <!-- Dynamic Live Statistics (Left box on Desktop) -->
@@ -188,38 +186,39 @@
             </div>
         </section>
 
-        <!-- Submit/Edit Form Section (Right box on Desktop) -->
+        <!-- Consolidated Submit/Edit Form Section (Right box on Desktop) -->
         <section class="form-section card">
             <h2 id="form-title">Write a Review</h2>
             <form id="review-form">
                 <input type="hidden" id="edit-review-id">
+                
+                <!-- Star Selector Links -->
+                <div class="star-rating-selector">
+                    <span class="star-btn" data-value="1">★</span>
+                    <span class="star-btn" data-value="2">★</span>
+                    <span class="star-btn" data-value="3">★</span>
+                    <span class="star-btn" data-value="4">★</span>
+                    <span class="star-btn" data-value="5">★</span>
+                </div>
+
                 <div class="form-group">
                     <label for="review-name">Full Name *</label>
                     <input type="text" id="review-name" required placeholder="Enter your full name">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="review-email">Email Address (Optional - private)</label>
-                        <input type="email" id="review-email" placeholder="your@email.com">
+                        <label for="review-email">Email Address *</label>
+                        <input type="email" id="review-email" required placeholder="your@email.com">
                     </div>
                     <div class="form-group">
                         <label for="review-photo">Avatar URL (Optional)</label>
                         <input type="url" id="review-photo" placeholder="https://domain.com/avatar.jpg">
                     </div>
                 </div>
-               <form id="review-form">
-    <!-- Star Selector Links -->
-    <div class="star-rating-selector">
-        <span class="star-btn" data-value="1">★</span>
-        <span class="star-btn" data-value="2">★</span>
-        <span class="star-btn" data-value="3">★</span>
-        <span class="star-btn" data-value="4">★</span>
-        <span class="star-btn" data-value="5">★</span>
-    </div>
-    
-    <input type="text" id="reviewer-name" placeholder="Full Name" required>
-    <input type="email" id="reviewer-email" placeholder="Email Address" required>
-    <textarea id="reviewer-text" placeholder="Your Review" required></textarea>
+                <div class="form-group">
+                    <label for="reviewer-text">Your Review *</label>
+                    <textarea id="reviewer-text" placeholder="Your Review" required style="width: 100%; height: 100px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></textarea>
+                </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-primary" id="submit-btn">Submit Review</button>
                     <button type="button" class="btn btn-secondary" id="cancel-edit-btn" style="display: none;">Cancel</button>
@@ -229,9 +228,6 @@
         </section>
 
     </div> 
-    <!-- ==========================================================================
-         REVIEW WRAPPER SECTION ENDS
-         ========================================================================== -->
 
     <!-- Approved Reviews Feed -->
     <section class="reviews-feed-section">
@@ -243,12 +239,12 @@
                 <h4>- Mamta Raj Singh </h4> 
             </div> 
             <div class="testimonial-box">
-                <p> "MamRaj delivered our website professionally and on time." 
-                </p> <h4>- Ritesh Kumar</h4> </div>
+                <p> "MamRaj delivered our website professionally and on time."</p> 
+                <h4>- Ritesh Kumar</h4> 
             </div>
-             <div class="testimonial-box">
-                <p> "MamRaj delivered our website professionally and on time." 
-                </p> <h4>- Rajesh Kumar</h4> </div>
+            <div class="testimonial-box">
+                <p> "MamRaj delivered our website professionally and on time."</p> 
+                <h4>- Rajesh Kumar</h4> 
             </div>
             <div class="testimonial-box"> 
                 <p> "Amazing design and excellent support." </p> 
@@ -258,14 +254,15 @@
                 <p> "Amazing design and excellent support." </p> 
                 <h4>- Shipra </h4>
             </div>
-           <div class="testimonial-box"> 
+            <div class="testimonial-box"> 
                 <p> "Amazing design and excellent support." </p> 
                 <h4>- Kirti </h4>
             </div>
-           <div class="testimonial-box"> 
+            <div class="testimonial-box"> 
                 <p> "Amazing design and excellent support." </p> 
                 <h4>- Diksha </h4>
             </div>
+        </div>
     </section>
 
     <!-- Contact Form Section -->
@@ -294,8 +291,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-    <!-- Custom Tracker Scripts -->
+    <!-- Custom Tracker & Cart Scripts -->
     <script src="script.js"></script>  
+    <script src="cart.js"></script>  
     <script type="module" src="tracker.js"></script>
     <script type="module" src="review.js"></script>
 </body>
