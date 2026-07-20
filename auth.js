@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - MamRaj Web Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .auth-container h2 { margin-top: 0; color: #1E2A5A; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .btn-auth { width: 100%; padding: 12px; background: #1E2A5A; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .toggle-btn { margin-top: 15px; background: none; border: none; color: #C58B73; cursor: pointer; text-decoration: underline; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="auth-container">
+    <h2 id="auth-title">Login</h2>
+    <form id="auth-form">
+        <div class="form-group" id="name-group" style="display: none;">
+            <label>Full Name</label>
+            <input type="text" id="auth-name" placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="auth-email" placeholder="Enter email" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="auth-password" placeholder="Enter password" required>
+        </div>
+        <button type="submit" id="auth-submit-btn" class="btn-auth">Log In</button>
+    </form>
+    
+    <button type="button" class="toggle-btn" id="toggle-auth" onclick="toggleAuthMode()">Don't have an account? Sign Up</button>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+    // ⚠️ Replace with your actual Firebase Project Configuration
+    const firebaseConfig = {
+        apiKey: "YOUR_FIREBASE_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    let isSignUp = false;
+
+    function toggleAuthMode() {
+        isSignUp = !isSignUp;
+        document.getElementById("auth-title").innerText = isSignUp ? "Sign Up" : "Login";
+        document.getElementById("auth-submit-btn").innerText = isSignUp ? "Create Account" : "Log In";
+        document.getElementById("name-group").style.display = isSignUp ? "block" : "none";
+        document.getElementById("toggle-auth").innerText = isSignUp ? "Already have an account? Log In" : "Don't have an account? Sign Up";
+    }
+
+    document.getElementById("auth-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-password").value.trim();
+        const name = document.getElementById("auth-name").value.trim();
+
+        if (isSignUp) {
+            // Create New User
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return user.updateProfile({ displayName: name });
+                })
+                .then(() => {
+                    alert("Account created successfully!");
+                    window.location.href = "cart.html";
+                })
+                .catch(error => alert("Sign Up Error: " + error.message));
+        } else {
+            // Log In Existing User
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert("Logged in successfully!");
+                    window.location.href = "cart.html";
+                })
+                .catch(error => alert("Login Error: " + error.message));
+        }
+    });
+</script>
+
+</body>
+</html>
