@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile - MamRaj Web Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-card {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .profile-card h2 {
+            margin-top: 0;
+            color: #1E2A5A;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .btn-save {
+            width: 100%;
+            padding: 12px;
+            background: #1E2A5A;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-save:hover {
+            background: #2b3d80;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-card">
+    <h2>Client Profile</h2>
+    <p style="color: #666; font-size: 14px;">Update your information for faster checkout.</p>
+    
+    <form id="profile-form">
+        <div class="form-group">
+            <label for="profName">Full Name</label>
+            <input type="text" id="profName" placeholder="Enter full name" required>
+        </div>
+        <div class="form-group">
+            <label for="profEmail">Email Address</label>
+            <input type="email" id="profEmail" placeholder="Enter email address" required>
+        </div>
+        <div class="form-group">
+            <label for="profPhone">Mobile Number</label>
+            <input type="tel" id="profPhone" placeholder="Enter mobile number" required>
+        </div>
+        <button type="submit" class="btn-save">Save Profile Details</button>
+    </form>
+</div>
+
+<script>
+    // Profile details load karein agar pehle se saved ho
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedProfile = JSON.parse(localStorage.getItem("clientProfile")) || {};
+        if (savedProfile.name) document.getElementById("profName").value = savedProfile.name;
+        if (savedProfile.email) document.getElementById("profEmail").value = savedProfile.email;
+        if (savedProfile.phone) document.getElementById("profPhone").value = savedProfile.phone;
+    });
+
+    // Profile details save karne ka logic
+    document.getElementById("profile-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const profile = {
+            name: document.getElementById("profName").value.trim(),
+            email: document.getElementById("profEmail").value.trim(),
+            phone: document.getElementById("profPhone").value.trim()
+        };
+
+        localStorage.setItem("clientProfile", JSON.stringify(profile));
+        alert("Profile details updated successfully!");
+    });
+</script>
+
+</body>
+</html>
