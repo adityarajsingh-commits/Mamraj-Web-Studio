@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MamRaj Web Studio - Home</title>
+    
+    <!-- External SDKs -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <!-- Load Razorpay Standard Checkout SDK -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; }
+        /* Embedded Form & Review Page Tweaks */
         form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
         input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         button { background-color: #3498db; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; width: 100%; font-size: 16px; }
@@ -26,12 +29,8 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to MamRaj Web Studio</h1>
-        <p>Your visit is being securely recorded in real time.</p>
-    </div>
 
-    <!-- Navbar -->
+    <!-- Always Fixed Navbar Header -->
     <header>
         <nav class="navbar">
             <div class="logo">
@@ -40,11 +39,14 @@
                 </a>
             </div>
 
+            <!-- Mobile Hamburger Button -->
             <div class="menu-toggle" id="menu-toggle">
                 <i class="fas fa-bars"></i>
             </div>
 
+            <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links">
+                <!-- Mobile Only Close Button -->
                 <li class="close-menu">
                     <i class="fas fa-times" id="close-menu"></i>
                 </li>
@@ -54,11 +56,9 @@
                 <li><a href="#products">📦 Products</a></li>
                 <li><a href="#testimonials">⭐ Testimonials</a></li>
                 <li><a href="#contact">✉ Contact</a></li>
-                <li><a href="login.html">🔐 Login</a></li>
-                <li><a href="signup.html">➕ Sign Up</a></li>
+                <li><a href="auth.html">🔐 My Profile / Login</a></li>
                 <li><a href="cart.html">🛒 Cart <span id="cart-count">0</span></a></li>
-                <a href="auth.html">My Profile / Login</a>
-                <a href="admin.html" class="admin-btn">🛡️ Admin</a>
+                <li><a href="admin.html" class="admin-btn">🛡️ Admin</a></li>
             </ul>
         </nav>
         <div id="overlay"></div>
@@ -67,6 +67,7 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
+            <p style="color: #6B7280; font-size: 14px; margin-bottom: 10px;">Your visit is being securely recorded in real time.</p>
             <h1>Build Your Digital Presence With MamRaj</h1>
             <p>
                 Professional Website Development, UI/UX Design,
@@ -79,7 +80,7 @@
         </div>
     </section>
 
-    <!-- About -->
+    <!-- About Section -->
     <section id="about" class="about">
         <h2>About Us</h2>
         <p>
@@ -89,7 +90,7 @@
         </p>
     </section>
 
-    <!-- Our Work -->
+    <!-- Our Work Section -->
     <section id="work" class="work">
         <h2>Our Work</h2>
         <div class="work-grid">
@@ -115,12 +116,12 @@
             </div>
             <div class="card">
                 <img src="images/6.png" alt="Restaurant Website">
-                <h3>Restrurant Website</h3>
+                <h3>Restaurant Website</h3>
             </div>
         </div>
     </section>
 
-    <!-- Products & Razorpay Integration -->
+    <!-- Products / Pricing Section -->
     <section id="products" class="products">
         <h2>Pricing Plans</h2>
         <div class="pricing-container">
@@ -148,9 +149,9 @@
     </section>
 
     <!-- Review Section Desktop Layout Container -->
-    <div class="review-layout-desktop">
+    <div class="review-layout-desktop" id="testimonials">
 
-        <!-- Dynamic Live Statistics (Left box on Desktop) -->
+        <!-- Dynamic Live Statistics (Left Box) -->
         <section class="stats-section card">
             <h2>Overall Rating Summary</h2>
             <div class="stats-grid">
@@ -162,12 +163,12 @@
                     <p id="total-reviews-count">Based on 0 reviews</p>
                 </div>
                 <div class="stats-bars" id="stats-bars-container">
-                    <!-- Dynamic breakdown rows will generate here -->
+                    <!-- Dynamic breakdown rows generate here -->
                 </div>
             </div>
         </section>
 
-        <!-- Consolidated Submit/Edit Form Section (Right box on Desktop) -->
+        <!-- Submit Review Form Section (Right Box) -->
         <section class="form-section card">
             <h2 id="form-title">Write a Review</h2>
             <form id="review-form">
@@ -214,34 +215,33 @@
     <section class="reviews-feed-section">
         <h2>What Our Clients Say</h2>
         <div class="reviews-list" id="reviews-list">
-            <!-- Dynamically populated reviews -->
             <div class="testimonial-box">
-                <p> "Amazing design and excellent support."</p> 
-                <h4>- Mamta Raj Singh </h4> 
+                <p>"Amazing design and excellent support."</p> 
+                <h4>- Mamta Raj Singh</h4> 
             </div> 
             <div class="testimonial-box">
-                <p> "MamRaj delivered our website professionally and on time."</p> 
+                <p>"MamRaj delivered our website professionally and on time."</p> 
                 <h4>- Ritesh Kumar</h4> 
             </div>
             <div class="testimonial-box">
-                <p> "MamRaj delivered our website professionally and on time."</p> 
+                <p>"MamRaj delivered our website professionally and on time."</p> 
                 <h4>- Rajesh Kumar</h4> 
             </div>
             <div class="testimonial-box"> 
-                <p> "Amazing design and excellent support." </p> 
+                <p>"Amazing design and excellent support."</p> 
                 <h4>- Piyush Vidyarthi</h4> 
             </div>
             <div class="testimonial-box"> 
-                <p> "Amazing design and excellent support." </p> 
-                <h4>- Shipra </h4>
+                <p>"Amazing design and excellent support."</p> 
+                <h4>- Shipra</h4> 
             </div>
             <div class="testimonial-box"> 
-                <p> "Amazing design and excellent support." </p> 
-                <h4>- Kirti </h4>
+                <p>"Amazing design and excellent support."</p> 
+                <h4>- Kirti</h4> 
             </div>
             <div class="testimonial-box"> 
-                <p> "Amazing design and excellent support." </p> 
-                <h4>- Diksha </h4>
+                <p>"Amazing design and excellent support."</p> 
+                <h4>- Diksha</h4> 
             </div>
         </div>
     </section>
@@ -254,7 +254,6 @@
             <input type="email" name="email" placeholder="Your Email" required>
             <textarea name="message" placeholder="Your Message" required></textarea>
 
-            <!-- Automation settings -->
             <input type="hidden" name="_autoresponse" value="Thank you for contacting MamRaj Web Studio. We have received your message and will get back to you within 24 hours.">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_next" value="https://mamrajwebstudio.in/thankyou.html">
@@ -272,7 +271,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-    <!-- Custom Tracker & Cart Scripts -->
+    <!-- Custom Scripts -->
     <script src="script.js"></script>  
     <script src="cart.js"></script>  
     <script type="module" src="tracker.js"></script>
