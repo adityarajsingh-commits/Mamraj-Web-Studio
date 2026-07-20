@@ -533,7 +533,7 @@ function payWithRazorpay() {
     
     // Agar details khali hain to aage mat badho
     if (!name || !email || !phone) {
-        alert("Kripya saari billing details bharein!");
+        alert("Please fill all your billing details!");
         return;
     }
 
