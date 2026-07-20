@@ -140,51 +140,25 @@
             </div>
         </div>
 
-        <!-- Razorpay Script SDK -->
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <div class="cart-container">
+    <h1>Your Cart</h1>
+    <div id="cart-items"></div>
+    <h2 id="total"></h2>
 
-        <!-- Payment Trigger Button -->
-        <div style="text-align: center; margin-top: 40px;">
-            <button id="rzp-button" class="payment-btn">Pay with Razorpay</button>
+    <div class="checkout-container">
+        <div class="billing-form">
+            <h3>Billing Details</h3>
+            <input type="text" id="userName" placeholder="Full Name" required>
+            <input type="email" id="userEmail" placeholder="Email Address" required>
+            <input type="tel" id="userPhone" placeholder="Mobile Number" required>
         </div>
-
-        <!-- Firebase & Razorpay Execution Script -->
-        <script type="module">
-        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-        const db = getDatabase();
-
-        document.getElementById('rzp-button').onclick = function(e) {
-          const options = {
-            "key": "rzp_test_TFattys1zBhps1", 
-            "amount": "1999900", 
-            "currency": "INR",
-            "name": "MamRaj Web Studio",
-            "description": "Premium Package Checkout",
-            "image": "images/logo.png",
-            "handler": function (response) {
-              const newOrderRef = push(ref(db, 'orders'));
-              set(newOrderRef, {
-                orderId: newOrderRef.key,
-                razorpayPaymentId: response.razorpay_payment_id,
-                amount: 19999,
-                package: "Premium",
-                timestamp: Date.now(),
-                status: "Paid (Pending Manual Verification)" 
-              }).then(() => {
-                alert("Payment Recorded! Payment ID: " + response.razorpay_payment_id);
-              });
-            },
-            "prefill": {
-              "name": "Customer Name",
-              "email": "customer@example.com",
-              "contact": "9999999999"
-            },
-            "theme": {
-              "color": "#1E2A5A"
-            }
-          };
-
+        <div class="checkout-summary">
+            <h2>Total: ₹<span id="cart-total-val">0</span></h2>
+            <!-- Replaced payment link with checkout button -->
+            <button id="pay-button" style="padding: 10px 20px; background-color: #3399cc; color: white; border: none; cursor: pointer; border-radius: 4px;">Pay Now Securely</button>
+        </div>
+    </div>
+</div>
           const rzp1 = new Razorpay(options);
           rzp1.open();
           e.preventDefault();
