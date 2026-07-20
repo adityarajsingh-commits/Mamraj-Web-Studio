@@ -107,3 +107,18 @@ function payWithRazorpay(event) {
         alert("Failed to initialize Razorpay checkout popup.");
     }
 }
+// --- Firebase Auto-Fill Integration ---
+// Load Firebase Scripts dynamically or include them in cart.html head
+if (typeof firebase !== 'undefined') {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // User Logged In - Form Field Sync
+            if (document.getElementById("userName") && user.displayName) {
+                document.getElementById("userName").value = user.displayName;
+            }
+            if (document.getElementById("userEmail") && user.email) {
+                document.getElementById("userEmail").value = user.email;
+            }
+        }
+    });
+}
