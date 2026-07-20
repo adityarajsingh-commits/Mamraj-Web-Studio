@@ -3,118 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviews Moderation Dashboard - MamRaj Web Studio</title>
+    <title>Admin Dashboard - MamRaj Web Studio</title>
+    
+    <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
     <style>
-        .admin-table-container {
-            overflow-x: auto;
-            margin-top: 20px;
+        /* ==========================================
+           ADMIN DASHBOARD SPECIFIC OVERRIDES 
+           ========================================== */
+        body {
+            background-color: #f8f9fa;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
+
+        .admin-dashboard-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        th {
-            background-color: #f8fafc;
-            font-weight: 700;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: capitalize;
-        }
-        .status-approved { background-color: #e8f5e9; color: var(--success); }
-        .status-pending { background-color: #fff3e0; color: var(--pending); }
-        .status-rejected { background-color: #ffebee; color: var(--danger); }
-        .row-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .dashboard-header {
+
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
+
+        .admin-header h1 {
+            color: #1E2A5A;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .admin-header p {
+            color: #6B7280;
+            margin-top: 5px;
+        }
+
+        /* Admin Layout Grid System */
+        .admin-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .admin-grid {
+                display: grid;
+                grid-template-columns: 320px 1fr;
+                align-items: start;
+            }
+        }
+
+        /* Dashboard Box Override (Fixing 350px Glitch) */
+        .admin-box {
+            width: 100% !important;
+            max-width: 100% !important;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        .admin-box h2 {
+            font-size: 20px;
+            color: #1E2A5A;
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* Filter Controls Styling */
+        .filter-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .filter-controls input, 
+        .filter-controls select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        /* Responsive Table Design */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .admin-table th, 
+        .admin-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .admin-table th {
+            background-color: #1E2A5A;
+            color: white;
+            font-weight: 600;
+        }
+
+        .admin-table th:first-child { border-top-left-radius: 8px; }
+        .admin-table th:last-child { border-top-right-radius: 8px; }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-approve { background-color: #2eb85c; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-reject { background-color: #e55353; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-delete { background-color: #3c4b64; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="container" style="max-width: 1200px;">
-        <div class="dashboard-header">
+
+    <div class="admin-dashboard-container">
+        
+        <!-- Admin Dashboard Header -->
+        <div class="admin-header">
             <div>
                 <h1>Admin Moderation Dashboard</h1>
                 <p>Manage, Moderate and Curate Client Reviews</p>
             </div>
-            <a href="index.html" class="btn btn-secondary">Go to Website</a>
+            <a href="index.html" class="btn" style="width: auto; text-decoration: none;">Go to Website</a>
         </div>
 
-        <!-- Filter, Sort and Search Controls -->
-        <section class="card">
-            <h2>Filter & Moderation Tools</h2>
-            <div class="filters-container">
-                <input type="text" id="admin-search" class="search-input-field" placeholder="Search by name, email, review content...">
-                
-                <select id="filter-status">
-                    <option value="all">All Statuses</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                </select>
+        <!-- Dashboard Main Grid -->
+        <div class="admin-grid">
+            
+            <!-- Sidebar: Moderation Tools / Filters -->
+            <div class="admin-box">
+                <h2>Filter & Moderation Tools</h2>
+                <div class="filter-controls">
+                    <input type="text" id="admin-search" placeholder="Search by name, email, review...">
+                    
+                    <select id="filter-status">
+                        <option value="all">All Statuses</option>
+                        <option value="approved">Approved</option>
+                        <option value="pending">Pending</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
 
-                <select id="filter-rating">
-                    <option value="all">All Ratings</option>
-                    <option value="5">5 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="2">2 Stars</option>
-                    <option value="1">1 Star</option>
-                </select>
+                    <select id="filter-rating">
+                        <option value="all">All Ratings</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
+                    </select>
 
-                <select id="sort-by">
-                    <option value="newest">Newest First</option>
-                    <option value="highest-rating">Highest Rating</option>
-                    <option value="lowest-rating">Lowest Rating</option>
-                </select>
+                    <select id="filter-sort">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
             </div>
-        </section>
 
-        <!-- Dynamic Reviews Admin Management Table -->
-        <section class="card">
-            <h2>All Reviews Under Management</h2>
-            <div class="admin-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User details</th>
-                            <th>Rating</th>
-                            <th>Review Message</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-table-body">
-                        <!-- Populated programmatically -->
-                    </tbody>
-                </table>
+            <!-- Main Panel: Reviews Table -->
+            <div class="admin-box">
+                <h2>All Reviews Under Management</h2>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User Details</th>
+                                <th>Rating</th>
+                                <th>Review</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-reviews-body">
+                            <!-- Dynamic Data loaded via Javascript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </section>
+
+        </div>
     </div>
 
-    <script type="module" src="script.js"></script>
-    <script type="module" src="admin-reviews.js"></script>
+    <!-- Firebase Scripts & Admin JS -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script type="module" src="review.js"></script>
 </body>
 </html>
