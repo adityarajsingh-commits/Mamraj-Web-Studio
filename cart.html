@@ -5,41 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Razorpay SDK Integration -->
-    <script src="https://rzp.io/rzp/tQjwbit"></script>
+    
+    <!-- ✅ Official Razorpay Standard Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 
 <body>
 
 <div class="cart-container">
 
-   <h1>Your Cart</h1>
+    <h1>Your Cart</h1>
 
-<!-- Dynamic Cart Items Rendering Target -->
-<div id="cart-items"></div>
+    <!-- Dynamic Cart Items Rendering Target -->
+    <div id="cart-items"></div>
 
-<h2 id="total"></h2>
+    <h2 id="total"></h2>
 
-<div class="checkout-container">
-    <!-- Billing Details Form (Fixed to Professional English) -->
-    <div class="billing-form">
-        <h3>Billing Details</h3>
-        <input type="text" id="userName" placeholder="Full Name" required>
-        <input type="email" id="userEmail" placeholder="Email Address" required>
-        <input type="tel" id="userPhone" placeholder="Mobile Number" required>
-    </div>
+    <div class="checkout-container">
+        <!-- Billing Details Form -->
+        <div class="billing-form">
+            <h3>Billing Details</h3>
+            <input type="text" id="userName" placeholder="Full Name" required>
+            <input type="email" id="userEmail" placeholder="Email Address" required>
+            <input type="tel" id="userPhone" placeholder="Mobile Number" required>
+        </div>
 
-    <!-- Total Area and Action Button (Dynamic Price Synchronization Fixed) -->
-    <div class="checkout-summary">
-        <h2>Total: ₹<span id="cart-total-val">0</span></h2>
-        <button id="pay-button" onclick="checkout(event)" style="padding: 10px 20px; background-color: #3399cc; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">Pay Now Securely</button>
-
+        <!-- Total Area and Action Button -->
+        <div class="checkout-summary">
+            <h2>Total: ₹<span id="cart-total-val">0</span></h2>
+            
+            <!-- ✅ Trigger function updated to match cart.js integration -->
+            <button id="pay-button" onclick="payWithRazorpay()" class="btn-checkout" style="padding: 12px 24px; background: linear-gradient(135deg, #1E2A5A, #7A5A7A); color: white; border: none; cursor: pointer; border-radius: 8px; font-weight: bold; width: 100%;">
+                Pay Now Securely
+            </button>
+        </div>
     </div>
 </div>
-</div>
 
-
-<!-- Core Cart Logic Engine -->
+<!-- Core Cart Logic & Backend Razorpay Integration Engine -->
 <script src="cart.js"></script>
 
 </body>
