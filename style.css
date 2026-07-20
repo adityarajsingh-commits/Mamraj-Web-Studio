@@ -38,10 +38,6 @@ body{
 }
 
 /* ==========================================================================
-   NAVBAR (Auto-Hiding Smooth Slide Animation)
-   ========================================================================== */
-
-/* ==========================================================================
    NAVBAR (Always Visible & Fixed Top)
    ========================================================================== */
 
@@ -65,11 +61,10 @@ header {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    transform: translateY(0) !important; /* Fixed: Forcefully always visible */
+    transform: translateY(0) !important;
     transition: none;
 }
 
-/* Hover transform hata diya taaki ye hil-dul na kare */
 .navbar:hover {
     transform: translateY(0) !important;
 }
@@ -110,6 +105,28 @@ header {
     border-radius: 20px;
     font-weight: 600 !important;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Hide Hamburger & Close Icon by default on Desktop */
+.menu-toggle, 
+.close-menu {
+    display: none;
+}
+
+/* Background Overlay for Mobile Menu */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 9998;
+}
+
+#overlay.active {
+    display: block;
 }
 
 /* ==========================================================================
@@ -322,10 +339,9 @@ section h2{
 }
 
 /* ==========================================================================
-   💥 ULTIMATE FIXED REVIEW LAYOUT (Side-by-Side Left to Right Grid)
+   REVIEW LAYOUT
    ========================================================================== */
 
-/* Main Review Container Outer Shell */
 .review-layout-desktop {
     display: flex;
     flex-direction: column;
@@ -336,10 +352,9 @@ section h2{
     padding: 0 !important;
 }
 
-/* Fixing the static 350px width glitch from .card class on sections */
 .review-layout-desktop .stats-section, 
 .review-layout-desktop .form-section {
-    width: 100% !important;   /* Force karke width auto grid par set ki */
+    width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
     padding: 35px !important;
@@ -349,7 +364,6 @@ section h2{
     display: block !important;
 }
 
-/* Dynamic Live Star Selector System Formatting */
 .star-rating-selector {
     display: flex;
     gap: 8px;
@@ -365,29 +379,25 @@ section h2{
     color: #f1c40f;
 }
 
-/* 💻 BADI SCREEN/DESKTOP VIEW (Yahan layout full left to right spread hoga) */
 @media (min-width: 850px) {
     .review-layout-desktop {
-        flex-direction: row !important; /* Force side-by-side alignment */
-        align-items: stretch !important;  /* Dono cards ki height barabar rahegi */
+        flex-direction: row !important;
+        align-items: stretch !important;
         justify-content: space-between !important;
         gap: 40px !important;
     }
 
-    /* Left Section (Overall Rating Summary) - Takes 42% space */
     .review-layout-desktop .stats-section {
         flex: 4.2 !important;
         margin-bottom: 0 !important;
     }
 
-    /* Right Section (Form Editor Layout) - Takes 5.8 ratio space */
     .review-layout-desktop .form-section {
         flex: 5.8 !important;
         margin-bottom: 0 !important;
     }
 }
 
-/* Form Row Helper Elements */
 .form-row {
     display: flex;
     gap: 15px;
@@ -414,7 +424,7 @@ section h2{
     font-size: 14px;
 }
 
-/* CHECKOUT & CART LAYOUTS */
+/* CHECKOUT & CART */
 .checkout-container {
     max-width: 600px;
     margin: 20px auto;
@@ -523,12 +533,8 @@ footer{
     border-top:1px solid var(--border);
 }
 
-.menu-toggle{
-    display: none;
-}
-
 /* ==========================================================================
-   RESPONSIVE GLOBAL MEDIA QUERIES & MOBILE TOGGLES
+   RESPONSIVE GLOBAL MEDIA QUERIES
    ========================================================================== */
 @media(max-width:768px){
     .navbar{
@@ -542,15 +548,25 @@ footer{
         align-items: center;
         padding: 12px 20px;
     }
+    
     .logo img{
         height:45px;
     }
 
     .menu-toggle{
         display:block;
-        font-size:30px;
-        color:#1E2A5A;
+        font-size:26px;
+        color:var(--navy);
         cursor:pointer;
+    }
+
+    .close-menu {
+        display: block;
+        align-self: flex-end;
+        font-size: 24px;
+        color: var(--navy);
+        cursor: pointer;
+        margin-bottom: 10px;
     }
 
     .nav-links{
@@ -558,14 +574,15 @@ footer{
         top:0;
         right:-100%;
         width:280px;
-        height:100%;
+        height:100vh;
         background:#fff;
         display:flex;
         flex-direction:column;
-        padding:80px 25px;
+        padding:25px;
         gap:20px;
-        transition:.4s;
+        transition:.4s ease;
         box-shadow:-5px 0 15px rgba(0,0,0,.15);
+        z-index: 9999;
     }
 
     .nav-links.active{
@@ -576,7 +593,6 @@ footer{
         font-size:2.3rem;
     }
 
-    /* Normal grids revert to full width on mobile */
     .card, .price-card{
         width:100% !important;
     }
