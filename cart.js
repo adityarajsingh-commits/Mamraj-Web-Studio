@@ -1,9 +1,9 @@
-// Initialize cart
+// Initialize cart and elements
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let cartItems = document.getElementById("cart-items");
 let total = 0;
 
-// Render Cart Items
+// Render Cart Items dynamically
 if (cartItems) {
     cartItems.innerHTML = "";
     cart.forEach((item, index) => {
@@ -20,17 +20,38 @@ if (cartItems) {
     });
 }
 
-// Update Totals
-if (document.getElementById("total")) document.getElementById("total").innerText = "Total: ₹" + total;
-if (document.getElementById("cart-total-val")) document.getElementById("cart-total-val").innerText = total;
+// Update the visible total metrics across the layout
+if (document.getElementById("total")) {
+    document.getElementById("total").innerText = "Total: ₹" + total;
+}
+if (document.getElementById("cart-total-val")) {
+    document.getElementById("cart-total-val").innerText = total;
+}
 
+// Remove item from cart
 function removeItem(index) {
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
     location.reload();
 }
 
-// Client-Side Direct Razorpay
+// AUTO-FILL CLIENT PROFILE IN CART FORM
+document.addEventListener("DOMContentLoaded", () => {
+    const savedProfile = JSON.parse(localStorage.getItem("clientProfile"));
+    if (savedProfile) {
+        if (document.getElementById("userName") && savedProfile.name) {
+            document.getElementById("userName").value = savedProfile.name;
+        }
+        if (document.getElementById("userEmail") && savedProfile.email) {
+            document.getElementById("userEmail").value = savedProfile.email;
+        }
+        if (document.getElementById("userPhone") && savedProfile.phone) {
+            document.getElementById("userPhone").value = savedProfile.phone;
+        }
+    }
+});
+
+// Direct Razorpay Checkout Function
 function payWithRazorpay(event) {
     if (event) event.preventDefault();
 
@@ -39,7 +60,7 @@ function payWithRazorpay(event) {
     const phone = document.getElementById("userPhone") ? document.getElementById("userPhone").value.trim() : "";
 
     if (!name || !email || !phone) {
-        alert("Please enter all Billing Details (Full Name, Email, and Mobile).");
+        alert("Please enter all Billing Details (Full Name, Email, and Mobile) to proceed.");
         return;
     }
 
@@ -48,12 +69,13 @@ function payWithRazorpay(event) {
         return;
     }
 
+    // Direct Modal Configuration
     const options = {
-        "key": "rzp_test_TFattys1zBhps1", // Aapki Key ID
-        "amount": Math.round(total * 100), // Amount in paise
+        "key": "rzp_test_TFattys1zBhps1",
+        "amount": Math.round(total * 100),
         "currency": "INR",
         "name": "MamRaj Web Studio",
-        "description": "Cart Checkout",
+        "description": "Shopping Cart Checkout",
         "handler": function (response) {
             alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
             localStorage.removeItem("cart");
@@ -68,7 +90,7 @@ function payWithRazorpay(event) {
             "color": "#1E2A5A"
         },
         "modal": {
-            "ondismiss": function() {
+            "ondismiss": function () {
                 alert("Transaction cancelled.");
             }
         }
@@ -81,7 +103,7 @@ function payWithRazorpay(event) {
         });
         rzp.open();
     } catch (err) {
-        console.error(err);
-        alert("Error opening Razorpay modal.");
+        console.error("Razorpay Error:", err);
+        alert("Failed to initialize Razorpay checkout popup.");
     }
 }
