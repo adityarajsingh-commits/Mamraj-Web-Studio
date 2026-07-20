@@ -4,18 +4,21 @@ let cartItems = document.getElementById("cart-items");
 let total = 0;
 
 // Render Cart Items dynamically
-cart.forEach((item, index) => {
-    total += item.price;
-    if (cartItems) {
+if (cartItems) {
+    cartItems.innerHTML = "";
+    cart.forEach((item, index) => {
+        total += Number(item.price);
         cartItems.innerHTML += `
-            <div class="cart-item">
-                <h3>${item.name}</h3>
-                <p>₹${item.price}</p>
-                <button onclick="removeItem(${index})">Remove</button>
+            <div class="cart-item" style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="margin: 0; color: #1E2A5A;">${item.name}</h3>
+                    <p style="margin: 5px 0 0; color: #C58B73; font-weight: 600;">₹${item.price}</p>
+                </div>
+                <button onclick="removeItem(${index})" style="background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Remove</button>
             </div>
         `;
-    }
-});
+    });
+}
 
 // Update the visible total metrics across the layout
 if (document.getElementById("total")) {
@@ -34,10 +37,8 @@ function removeItem(index) {
 
 // --- Razorpay Standard Web Checkout Integration ---
 const RAZORPAY_KEY_ID = "rzp_test_TFattys1zBhps1"; 
-// Replace with the base URL of your deployed Cloud Functions (e.g., https://us-central1-yourproject.cloudfunctions.net)
-const BACKEND_BASE_URL = "https://<YOUR_CLOUD_FUNCTIONS_URL>"; 
 
-async function checkout(event) {
+async function payWithRazorpay(event) {
     if (event) event.preventDefault();
 
     // 1. Gather Billing Details & Validate inputs
@@ -62,15 +63,17 @@ async function checkout(event) {
         return;
     }
 
-    const payBtn = document.getElementById("pay-button") || event.target;
-    const originalText = payBtn.innerText || payBtn.textContent;
+    const payBtn = document.getElementById("pay-button") || (event && event.target);
+    const originalText = payBtn ? payBtn.innerText : "Pay Now Securely";
 
     try {
-        payBtn.disabled = true;
-        payBtn.textContent = "Processing...";
+        if (payBtn) {
+            payBtn.disabled = true;
+            payBtn.textContent = "Processing...";
+        }
 
-        // STEP 1: Securely create order on your serverless backend
-        const orderResponse = await fetch(`${BACKEND_BASE_URL}/createOrder`, {
+        // STEP 1: Securely create order on your Node.js backend
+        const orderResponse = await fetch("/api/create-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -95,10 +98,10 @@ async function checkout(event) {
             order_id: orderData.order_id,
             handler: async function (response) {
                 try {
-                    payBtn.textContent = "Verifying payment...";
+                    if (payBtn) payBtn.textContent = "Verifying payment...";
                     
                     // STEP 3: Verify Razorpay Signature on your backend
-                    const verifyResponse = await fetch(`${BACKEND_BASE_URL}/verifyPayment`, {
+                    const verifyResponse = await fetch("/api/verify-payment", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -112,11 +115,10 @@ async function checkout(event) {
 
                     if (verifyResponse.ok && verificationResult.status === "success") {
                         alert("Thank you! Your transaction was successful and verified.");
-                        // Clear cart from client browser cache storage on successful transaction
                         localStorage.removeItem("cart");
                         location.reload();
                     } else {
-                        alert("Verification Error: " + (verificationResult.error || "Payment signature invalid."));
+                        alert("Verification Error: " + (verificationResult.message || "Payment signature invalid."));
                         resetBtn();
                     }
                 } catch (err) {
@@ -131,7 +133,7 @@ async function checkout(event) {
                 contact: phone
             },
             theme: {
-                color: "#3399cc"
+                color: "#1E2A5A"
             },
             modal: {
                 ondismiss: function () {
@@ -150,12 +152,14 @@ async function checkout(event) {
 
     } catch (error) {
         console.error("Checkout setup failure:", error);
-        alert("Failed to initialize transaction. Please try again.");
+        alert("Failed to initialize transaction. Make sure your local Node.js server (server.js) is running.");
         resetBtn();
     }
 
     function resetBtn() {
-        payBtn.disabled = false;
-        payBtn.textContent = originalText;
+        if (payBtn) {
+            payBtn.disabled = false;
+            payBtn.textContent = originalText;
+        }
     }
 }
