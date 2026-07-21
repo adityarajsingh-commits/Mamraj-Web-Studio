@@ -6,10 +6,10 @@
 // 1. Firebase Initialization & Exports
 // ----------------------
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Yahan apni Firebase Console ki Config Details check/update kar lein
+// Firebase Configuration Details
 const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -24,47 +24,43 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-// Export for Admin Dashboard & Reviews Management
-export { db, auth, ref, update, remove, onValue, signInWithEmailAndPassword, signOut, onAuthStateChanged };
+// Export Modules for Admin & Public Reviews Logic
+export { db, auth, ref, push, update, remove, onValue, signInWithEmailAndPassword, signOut, onAuthStateChanged };
 
 
 // =========================================
-// MAMRAJ WEB STUDIO
-// PART 1 - UI & THEME LOGIC
+// PART 1 - UI, THEME & NAVBAR LOGIC
 // =========================================
 
-// ----------------------
-// Theme Toggle
-// ----------------------
-const themeToggle = document.getElementById("theme-toggle");
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // ----------------------
+    // Theme Toggle
+    // ----------------------
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            const icon = themeToggle.querySelector("i");
 
-if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark");
-        const icon = themeToggle.querySelector("i");
-
-        if (document.body.classList.contains("dark")) {
-            if (icon) {
-                icon.classList.remove("fa-moon");
-                icon.classList.add("fa-sun");
+            if (document.body.classList.contains("dark")) {
+                if (icon) {
+                    icon.classList.remove("fa-moon");
+                    icon.classList.add("fa-sun");
+                }
+                localStorage.setItem("theme", "dark");
+            } else {
+                if (icon) {
+                    icon.classList.remove("fa-sun");
+                    icon.classList.add("fa-moon");
+                }
+                localStorage.setItem("theme", "light");
             }
-            localStorage.setItem("theme", "dark");
-        } else {
-            if (icon) {
-                icon.classList.remove("fa-sun");
-                icon.classList.add("fa-moon");
-            }
-            localStorage.setItem("theme", "light");
-        }
-    });
-}
+        });
+    }
 
-// ----------------------
-// Load Saved Theme
-// ----------------------
-window.addEventListener("load", () => {
+    // Load Saved Theme
     const savedTheme = localStorage.getItem("theme");
-
     if (savedTheme === "dark") {
         document.body.classList.add("dark");
         if (themeToggle) {
@@ -75,150 +71,196 @@ window.addEventListener("load", () => {
             }
         }
     }
+
+    // ----------------------
+    // Mobile Hamburger Drawer Toggle
+    // ----------------------
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+    const closeMenu = document.getElementById("close-menu");
+    const overlay = document.getElementById("overlay");
+
+    function closeMobileMenu() {
+        if (navLinks) navLinks.classList.remove("active");
+        if (overlay) overlay.classList.remove("show");
+        document.body.style.overflow = "auto";
+    }
+
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener("click", () => {
+            navLinks.classList.add("active");
+            if (overlay) overlay.classList.add("show");
+            document.body.style.overflow = "hidden";
+        });
+    }
+
+    if (closeMenu) closeMenu.addEventListener("click", closeMobileMenu);
+    if (overlay) overlay.addEventListener("click", closeMobileMenu);
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+        link.addEventListener("click", closeMobileMenu);
+    });
+
+    // ----------------------
+    // Smooth Scroll
+    // ----------------------
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        });
+    });
+
+    // ----------------------
+    // Scroll Reveal Animation
+    // ----------------------
+    const revealElements = document.querySelectorAll(".card, .price-card, .testimonial-box, .about");
+    revealElements.forEach(element => {
+        element.style.opacity = "0";
+        element.style.transform = "translateY(40px)";
+        element.style.transition = "all .7s ease";
+    });
+
+    function revealOnScroll() {
+        revealElements.forEach(element => {
+            const windowHeight = window.innerHeight;
+            const revealTop = element.getBoundingClientRect().top;
+
+            if (revealTop < windowHeight - 120) {
+                element.style.opacity = "1";
+                element.style.transform = "translateY(0)";
+            }
+        });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    revealOnScroll();
+
+    // ----------------------
+    // Testimonial Slider
+    // ----------------------
+    const testimonials = document.querySelectorAll(".testimonial-box");
+    let currentTestimonial = 0;
+
+    if (testimonials.length > 0) {
+        function showTestimonial(index) {
+            testimonials.forEach(item => { item.style.display = "none"; });
+            testimonials[index].style.display = "block";
+        }
+        showTestimonial(currentTestimonial);
+
+        setInterval(() => {
+            currentTestimonial++;
+            if (currentTestimonial >= testimonials.length) currentTestimonial = 0;
+            showTestimonial(currentTestimonial);
+        }, 4000);
+    }
+
+    // ----------------------
+    // Counter Animation
+    // ----------------------
+    const counters = document.querySelectorAll(".counter");
+    counters.forEach(counter => {
+        counter.innerText = "0";
+        const target = +counter.dataset.target;
+
+        const updateCounter = () => {
+            const current = +counter.innerText;
+            const increment = target / 100;
+
+            if (current < target) {
+                counter.innerText = Math.ceil(current + increment);
+                setTimeout(updateCounter, 20);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        updateCounter();
+    });
+
+    // ----------------------
+    // Custom Cursor
+    // ----------------------
+    const cursor = document.querySelector(".cursor");
+    if (cursor) {
+        document.addEventListener("mousemove", e => {
+            cursor.style.left = e.clientX + "px";
+            cursor.style.top = e.clientY + "px";
+        });
+    }
+
+    // ----------------------
+    // Background Music Auto-Controller
+    // ----------------------
+    const bgMusic = document.getElementById("bg-music");
+    const musicBtn = document.getElementById("music-control-btn");
+    const musicIcon = document.getElementById("music-icon");
+
+    if (bgMusic && musicBtn) {
+        bgMusic.volume = 0.3; // 30% ambient volume
+        let isPlaying = false;
+
+        function playAudio() {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicBtn.classList.add("playing");
+                if (musicIcon) {
+                    musicIcon.classList.remove("fa-music");
+                    musicIcon.classList.add("fa-pause");
+                }
+            }).catch(err => console.log("Waiting for user gesture:", err));
+        }
+
+        function pauseAudio() {
+            bgMusic.pause();
+            isPlaying = false;
+            musicBtn.classList.remove("playing");
+            if (musicIcon) {
+                musicIcon.classList.remove("fa-pause");
+                musicIcon.classList.add("fa-music");
+            }
+        }
+
+        musicBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (isPlaying) pauseAudio();
+            else playAudio();
+        });
+
+        const enableAutoplayOnInteraction = () => {
+            if (!isPlaying) playAudio();
+            window.removeEventListener("click", enableAutoplayOnInteraction);
+        };
+        window.addEventListener("click", enableAutoplayOnInteraction);
+    }
+
+    updateCartCount();
 });
 
-// ----------------------
-// Sticky Navbar
-// ----------------------
+
+// =========================================
+// PART 2 - GLOBAL FUNCTIONS (Cart, Form & Payment)
+// =========================================
+
+// Sticky Navbar Scroll Effect
 window.addEventListener("scroll", () => {
     const navbar = document.querySelector(".navbar");
     if (!navbar) return;
 
     if (window.scrollY > 50) {
         navbar.style.boxShadow = "0 10px 30px rgba(0,0,0,.15)";
-        navbar.style.padding = "15px 8%";
     } else {
         navbar.style.boxShadow = "none";
-        navbar.style.padding = "20px 8%";
     }
 });
 
-
-// =========================================
-// MAMRAJ WEB STUDIO
-// PART 2 - MENU & SCROLL ANIMATIONS
-// =========================================
-
-// ----------------------
-// Mobile Hamburger Menu
-// ----------------------
-const menuToggle = document.getElementById("menu-toggle");
-const navLinks = document.getElementById("nav-links");
-const closeMenu = document.getElementById("close-menu");
-const overlay = document.getElementById("overlay");
-
-if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => {
-        navLinks.classList.add("active");
-        if (overlay) overlay.classList.add("show");
-        document.body.style.overflow = "hidden";
-    });
-}
-
-if (closeMenu && navLinks) {
-    closeMenu.addEventListener("click", () => {
-        navLinks.classList.remove("active");
-        if (overlay) overlay.classList.remove("show");
-        document.body.style.overflow = "auto";
-    });
-}
-
-if (overlay) {
-    overlay.addEventListener("click", () => {
-        if (navLinks) navLinks.classList.remove("active");
-        overlay.classList.remove("show");
-        document.body.style.overflow = "auto";
-    });
-}
-
-// Close menu after clicking any menu link
-document.querySelectorAll(".nav-links a").forEach(link => {
-    link.addEventListener("click", () => {
-        if (navLinks) {
-            navLinks.classList.remove("active");
-            if (overlay) overlay.classList.remove("show");
-            document.body.style.overflow = "auto";
-        }
-    });
-});
-
-// ----------------------
-// Smooth Scroll
-// ----------------------
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener("click", function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute("href"));
-
-        if (target) {
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        }
-    });
-});
-
-// ----------------------
-// Scroll Reveal Animation
-// ----------------------
-const revealElements = document.querySelectorAll(".card, .price-card, .testimonial-box, .about");
-
-revealElements.forEach(element => {
-    element.style.opacity = "0";
-    element.style.transform = "translateY(40px)";
-    element.style.transition = "all .7s ease";
-});
-
-function revealOnScroll() {
-    revealElements.forEach(element => {
-        const windowHeight = window.innerHeight;
-        const revealTop = element.getBoundingClientRect().top;
-
-        if (revealTop < windowHeight - 120) {
-            element.style.opacity = "1";
-            element.style.transform = "translateY(0)";
-        }
-    });
-}
-
-window.addEventListener("scroll", revealOnScroll);
-revealOnScroll();
-
-// ----------------------
-// Testimonial Slider
-// ----------------------
-const testimonials = document.querySelectorAll(".testimonial-box");
-let currentTestimonial = 0;
-
-if (testimonials.length > 0) {
-    function showTestimonial(index) {
-        testimonials.forEach(item => {
-            item.style.display = "none";
-        });
-        testimonials[index].style.display = "block";
-    }
-
-    showTestimonial(currentTestimonial);
-
-    setInterval(() => {
-        currentTestimonial++;
-        if (currentTestimonial >= testimonials.length) {
-            currentTestimonial = 0;
-        }
-        showTestimonial(currentTestimonial);
-    }, 4000);
-}
-
-
-// =========================================
-// MAMRAJ WEB STUDIO
-// PART 3 - CART, FORMS & PAYMENT
-// =========================================
-
-// ----------------------
-// Shopping Cart
-// ----------------------
+// Shopping Cart Functions
 window.addToCart = function(name, price) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart.push({ name: name, price: price });
@@ -235,19 +277,15 @@ function updateCartCount() {
     }
 }
 
-// ----------------------
-// Contact Form Validation & EmailJS
-// ----------------------
+// EmailJS Contact Form
 if (typeof emailjs !== "undefined") {
     emailjs.init("-lpDLEthvMF803enK");
 }
 
 const emailForm = document.getElementById("contactForm");
-
 if (emailForm && typeof emailjs !== "undefined") {
     emailForm.addEventListener("submit", function (e) {
         e.preventDefault();
-
         emailjs.send(
             "service_55pjnkk",
             "YOUR_TEMPLATE_ID",
@@ -266,43 +304,7 @@ if (emailForm && typeof emailjs !== "undefined") {
     });
 }
 
-// ----------------------
-// Counter Animation
-// ----------------------
-const counters = document.querySelectorAll(".counter");
-
-counters.forEach(counter => {
-    counter.innerText = "0";
-    const target = +counter.dataset.target;
-
-    const updateCounter = () => {
-        const current = +counter.innerText;
-        const increment = target / 100;
-
-        if (current < target) {
-            counter.innerText = Math.ceil(current + increment);
-            setTimeout(updateCounter, 20);
-        } else {
-            counter.innerText = target;
-        }
-    };
-    updateCounter();
-});
-
-// ----------------------
-// Custom Cursor
-// ----------------------
-const cursor = document.querySelector(".cursor");
-if (cursor) {
-    document.addEventListener("mousemove", e => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-    });
-}
-
-// ----------------------
-// Razorpay Payment Integration
-// ----------------------
+// Razorpay Checkout Function
 window.payWithRazorpay = function() {
     const nameEl = document.getElementById('userName');
     const emailEl = document.getElementById('userEmail');
@@ -337,7 +339,7 @@ window.payWithRazorpay = function() {
             "contact": phone
         },
         "theme": {
-            "color": "#2b1055"
+            "color": "#1E2A5A"
         }
     };
 
@@ -345,7 +347,6 @@ window.payWithRazorpay = function() {
     rzp1.open();
 };
 
-// Ready Initialization
 window.addEventListener("load", () => {
     updateCartCount();
     console.log("MamRaj Web Studio Ready 🚀");
