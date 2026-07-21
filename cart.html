@@ -435,8 +435,7 @@
             }
         };
 
-        const rzp1 = new Razorpay(options);
-
+        const rzp1 = rzp_test_TGF3XufriGYi2q;
         rzp1.on('payment.failed', function (response){
             alert("Payment Failed! Code: " + response.error.code + " - " + response.error.description);
         });
