@@ -4,34 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>Checkout - Mamraj Web Studio</title>
     <!-- Razorpay Checkout SDK -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7f3ee;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #eaeded;
+            color: #0f1111;
+            padding: 20px 10px;
+        }
+
+        /* Amazon Header Style */
+        .checkout-header {
+            max-width: 1100px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .checkout-header h1 {
+            font-size: 22px;
+            color: #111;
+            font-weight: 600;
+        }
+
+        .secure-badge {
+            color: #007600;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Main Grid Container */
+        .checkout-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+        }
+
+        /* Responsive Layout for Mobile */
+        @media (max-width: 850px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Left Side Sections */
+        .checkout-left {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #d5d9d9;
+            border-radius: 8px;
             padding: 20px;
         }
 
-        .cart-container {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 30px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #2d2a4a;
+        .card h3 {
+            font-size: 18px;
+            color: #0f1111;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e7e7e7;
         }
 
         .input-group {
@@ -42,110 +94,232 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
-            color: #333;
+            font-size: 13px;
+            color: #111;
         }
 
         .input-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-sizing: border-box;
+            padding: 10px 12px;
+            border: 1px solid #888c8c;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #e77600;
+            box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5);
+        }
+
+        /* Cart Items List Style */
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
             font-size: 14px;
         }
 
-        .total-price {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2d2a4a;
-            margin: 20px 0;
+        .cart-item-row:last-child {
+            border-bottom: none;
         }
 
+        .cart-item-title {
+            font-weight: 600;
+            color: #0066c0;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: #b12704;
+        }
+
+        /* Right Side Summary Card */
+        .summary-card {
+            background-color: #ffffff;
+            border: 1px solid #d5d9d9;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e7e7e7;
+            padding-bottom: 8px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            color: #b12704;
+            border-top: 1px solid #e7e7e7;
+            padding-top: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Payment Button Styling */
         .btn-pay {
             width: 100%;
-            background: linear-gradient(135deg, #2d2a4a 0%, #5d4f72 100%);
-            color: #ffffff;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            background: #ffd814;
+            border: 1px solid #fcd200;
+            color: #0f1111;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s;
+            box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+            transition: background 0.2s;
         }
 
         .btn-pay:hover {
-            opacity: 0.9;
+            background: #f7ca00;
+            border-color: #f2c200;
         }
 
-        .cart-items-list {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+        .security-text {
+            font-size: 12px;
+            color: #565959;
+            text-align: center;
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
 
-<div class="cart-container">
-    <h2>Billing Details</h2>
-    
-    <!-- Cart Items Summary -->
-    <div id="cartItems" class="cart-items-list">
-        <!-- Javascript se items fill honge -->
-    </div>
-
-    <!-- User Input Fields -->
-    <div class="input-group">
-        <input type="text" id="fullName" placeholder="Full Name" required>
-    </div>
-    
-    <div class="input-group">
-        <input type="email" id="email" placeholder="Email Address" required>
-    </div>
-    
-    <div class="input-group">
-        <input type="tel" id="mobile" placeholder="Mobile Number" required>
-    </div>
-
-    <div class="total-price">
-        Total: ₹<span id="totalAmount">0</span>
-    </div>
-
-    <button type="button" class="btn-pay" id="payBtn" onclick="initiateRazorpayPayment()">Pay Now Securely</button>
+<!-- Amazon Style Header -->
+<div class="checkout-header">
+    <h1>Mamraj Web Studio Checklist</h1>
+    <div class="secure-badge">🔒 256-Bit SSL Secure Checkout</div>
 </div>
 
+<div class="checkout-container">
+    
+    <!-- LEFT COLUMN: User Input & Item Review -->
+    <div class="checkout-left">
+        
+        <!-- Billing Details Section -->
+        <div class="card">
+            <h3>1. Billing & Contact Details</h3>
+            
+            <div class="input-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="e.g. Aditya Raj Singh" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="e.g. adityaasingh025@gmail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" placeholder="e.g. 8429008066" required>
+            </div>
+        </div>
+
+        <!-- Cart Items Section -->
+        <div class="card">
+            <h3>2. Review Items</h3>
+            <div id="cartItems">
+                <!-- JavaScript se items dynamically render honge -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Order Summary Box -->
+    <div class="checkout-right">
+        <div class="summary-card">
+            <div class="summary-title">Order Summary</div>
+            
+            <div class="summary-row">
+                <span>Items:</span>
+                <span>₹<span id="itemsSubtotal">0</span></span>
+            </div>
+
+            <div class="summary-row">
+                <span>Taxes & Fees:</span>
+                <span>₹0</span>
+            </div>
+
+            <div class="summary-total">
+                <span>Order Total:</span>
+                <span>₹<span id="totalAmount">0</span></span>
+            </div>
+
+            <!-- UNTOUCHED PAYMENT BUTTON (Aapka original function Call hai) -->
+            <button type="button" class="btn-pay" id="payBtn" onclick="initiateRazorpayPayment()">Pay Now Securely</button>
+
+            <div class="security-text">
+                💳 Powered by Razorpay Secure Gateway
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- SCRIPT SECTION (Aapka Original Code) -->
 <script>
-    // 1. YOUR RAZORPAY KEY HERE (Test mode key like: rzp_test_xxxxxxxxxxxx)
+    // 1. YOUR RAZORPAY KEY HERE
     const RAZORPAY_KEY = "rzp_test_TGD6E4Htg9pmhl"; 
 
     let cartTotal = 0;
 
-    // 2. Load Cart Data (LocalStorage se fetch ho raha hai)
+    // 2. Load Cart Data
     function loadCartData() {
-        // Agar aapne previous page se cart item save kiya hai
         const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
         const cartContainer = document.getElementById('cartItems');
 
         if (cartItems.length === 0) {
-            // Agar testing ke liye sample item chahiye ho
-            cartTotal = 499; // Demo default total set
-            cartContainer.innerHTML = "<p>Sample Service / Product - ₹499</p>";
+            cartTotal = 499; 
+            cartContainer.innerHTML = "<div class='cart-item-row'><span class='cart-item-title'>Sample Service / Product</span><span class='cart-item-price'>₹499</span></div>";
         } else {
             cartContainer.innerHTML = '';
             cartTotal = 0;
 
             cartItems.forEach(item => {
-                cartTotal += (item.price * (item.quantity || 1));
-                cartContainer.innerHTML += `<p>${item.name} x ${item.quantity || 1} - ₹${item.price}</p>`;
+                const itemQty = item.quantity || 1;
+                const itemPrice = item.price * itemQty;
+                cartTotal += itemPrice;
+
+                cartContainer.innerHTML += `
+                    <div class="cart-item-row">
+                        <div>
+                            <div class="cart-item-title">${item.name}</div>
+                            <small style="color: #555;">Quantity: ${itemQty}</small>
+                        </div>
+                        <div class="cart-item-price">₹${itemPrice}</div>
+                    </div>
+                `;
             });
         }
 
-        // HTML par Total update karein
+        // HTML Total Updates
         document.getElementById('totalAmount').innerText = cartTotal;
+        document.getElementById('itemsSubtotal').innerText = cartTotal;
     }
 
-    // 3. Razorpay Payment Trigger Function
+    // 3. Razorpay Payment Trigger Function (BILKUL BILKUL UNTOUCHED)
     function initiateRazorpayPayment() {
         const name = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -164,7 +338,7 @@
 
         // Razorpay SDK Options
         const options = {
-              "key": RAZORPAY_KEY, 
+            "key": RAZORPAY_KEY, 
             "amount": cartTotal * 100, // Amount INR se Paise me convert (₹1 = 100 paise)
             "currency": "INR",
             "name": "Mamraj Web Studio",
@@ -180,7 +354,7 @@
             "handler": function (response) {
                 // Successful Payment Callbacks
                 alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-                
+
                 // Clear Cart after payment
                 localStorage.removeItem('cart');
                 window.location.reload();
@@ -188,7 +362,7 @@
         };
 
         const rzp1 = new Razorpay(options);
-        
+
         rzp1.on('payment.failed', function (response){
             alert("Payment Failed! Code: " + response.error.code + " - " + response.error.description);
         });
