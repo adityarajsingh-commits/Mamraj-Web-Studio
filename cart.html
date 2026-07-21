@@ -1,51 +1,204 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- ✅ Official Razorpay Standard Checkout SDK -->
+    <!-- Razorpay Checkout SDK -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-</head>
 
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f3ee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .cart-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #2d2a4a;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .total-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2d2a4a;
+            margin: 20px 0;
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: linear-gradient(135deg, #2d2a4a 0%, #5d4f72 100%);
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+
+        .cart-items-list {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
 <body>
 
 <div class="cart-container">
-
-    <h1>Your Cart</h1>
-
-    <!-- Dynamic Cart Items Rendering Target -->
-    <div id="cart-items"></div>
-
-    <h2 id="total"></h2>
-
-    <div class="checkout-container">
-        <!-- Billing Details Form -->
-        <div class="billing-form">
-            <h3>Billing Details</h3>
-            <input type="text" id="userName" placeholder="Full Name" required>
-            <input type="email" id="userEmail" placeholder="Email Address" required>
-            <input type="tel" id="userPhone" placeholder="Mobile Number" required>
-        </div>
-
-        <!-- Total Area and Action Button -->
-        <div class="checkout-summary">
-            <h2>Total: ₹<span id="cart-total-val">0</span></h2>
-            
-            <!-- ✅ Trigger function updated to match cart.js integration -->
-            <button id="pay-button" onclick="payWithRazorpay()" class="btn-checkout" style="padding: 12px 24px; background: linear-gradient(135deg, #1E2A5A, #7A5A7A); color: white; border: none; cursor: pointer; border-radius: 8px; font-weight: bold; width: 100%;">
-                Pay Now Securely
-            </button>
-        </div>
+    <h2>Billing Details</h2>
+    
+    <!-- Cart Items Summary -->
+    <div id="cartItems" class="cart-items-list">
+        <!-- Javascript se items fill honge -->
     </div>
+
+    <!-- User Input Fields -->
+    <div class="input-group">
+        <input type="text" id="fullName" placeholder="Full Name" required>
+    </div>
+    
+    <div class="input-group">
+        <input type="email" id="email" placeholder="Email Address" required>
+    </div>
+    
+    <div class="input-group">
+        <input type="tel" id="mobile" placeholder="Mobile Number" required>
+    </div>
+
+    <div class="total-price">
+        Total: ₹<span id="totalAmount">0</span>
+    </div>
+
+    <button type="button" class="btn-pay" id="payBtn" onclick="initiateRazorpayPayment()">Pay Now Securely</button>
 </div>
 
-<!-- Core Cart Logic & Backend Razorpay Integration Engine -->
-<script src="cart.js"></script>
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script>
+    // 1. YOUR RAZORPAY KEY HERE (Test mode key like: rzp_test_xxxxxxxxxxxx)
+    const RAZORPAY_KEY = "YOUR_RAZORPAY_KEY_ID"; 
+
+    let cartTotal = 0;
+
+    // 2. Load Cart Data (LocalStorage se fetch ho raha hai)
+    function loadCartData() {
+        // Agar aapne previous page se cart item save kiya hai
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContainer = document.getElementById('cartItems');
+
+        if (cartItems.length === 0) {
+            // Agar testing ke liye sample item chahiye ho
+            cartTotal = 499; // Demo default total set
+            cartContainer.innerHTML = "<p>Sample Service / Product - ₹499</p>";
+        } else {
+            cartContainer.innerHTML = '';
+            cartTotal = 0;
+
+            cartItems.forEach(item => {
+                cartTotal += (item.price * (item.quantity || 1));
+                cartContainer.innerHTML += `<p>${item.name} x ${item.quantity || 1} - ₹${item.price}</p>`;
+            });
+        }
+
+        // HTML par Total update karein
+        document.getElementById('totalAmount').innerText = cartTotal;
+    }
+
+    // 3. Razorpay Payment Trigger Function
+    function initiateRazorpayPayment() {
+        const name = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+
+        // Validation Checks
+        if (!name || !email || !mobile) {
+            alert("Kripya saari Details (Name, Email, Mobile) fill karein!");
+            return;
+        }
+
+        if (cartTotal <= 0) {
+            alert("Cart me koi item nahi hai ya amount 0 hai!");
+            return;
+        }
+
+        // Razorpay SDK Options
+        const options = {
+            "key": RAZORPAY_KEY, 
+            "amount": cartTotal * 100, // Amount INR se Paise me convert (₹1 = 100 paise)
+            "currency": "INR",
+            "name": "Mamraj Web Studio",
+            "description": "Cart Payment Checkout",
+            "prefill": {
+                "name": name,
+                "email": email,
+                "contact": mobile
+            },
+            "theme": {
+                "color": "#3399cc"
+            },
+            "handler": function (response) {
+                // Successful Payment Callbacks
+                alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                
+                // Clear Cart after payment
+                localStorage.removeItem('cart');
+                window.location.reload();
+            }
+        };
+
+        const rzp1 = new Razorpay(options);
+        
+        rzp1.on('payment.failed', function (response){
+            alert("Payment Failed! Code: " + response.error.code + " - " + response.error.description);
+        });
+
+        rzp1.open();
+    }
+
+    // Page start hote hi cart load karein
+    window.onload = loadCartData;
+</script>
+
 </body>
 </html>
