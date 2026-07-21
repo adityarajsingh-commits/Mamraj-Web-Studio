@@ -4,54 +4,72 @@ let total = 0;
 
 // Render Cart Items & Calculate Total
 function renderCart() {
-    const cartItems = document.getElementById("cart-items");
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // 1. Check for both possible container IDs (cart-items OR cartList)
+    const cartItems = document.getElementById("cart-items") || document.getElementById("cartList");
+    let cart = JSON.parse(localStorage.getItem("cart")) || JSON.parse(localStorage.getItem("mamraj_cart")) || [];
     total = 0;
 
     if (cartItems) {
         cartItems.innerHTML = "";
 
         if (cart.length === 0) {
-            cartItems.innerHTML = `<p style="text-align:center; padding: 20px; color: #666;">Your cart is empty.</p>`;
+            cartItems.innerHTML = `<p style="text-align:center; padding: 20px; color: #5A6578; font-size: 14px;">Your cart is empty.</p>`;
         } else {
             cart.forEach((item, index) => {
                 total += Number(item.price || 0);
                 cartItems.innerHTML += `
-                    <div class="cart-item" style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <div class="cart-item" style="background: white; padding: 14px 16px; margin-bottom: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #E2D9CF;">
                         <div>
-                            <h3 style="margin: 0; color: #1E2A5A; font-size: 16px;">${item.name}</h3>
-                            <p style="margin: 5px 0 0; color: #C58B73; font-weight: 600;">₹${item.price}</p>
+                            <h3 style="margin: 0; color: #0A1128; font-size: 15px; font-weight: 700;">${item.name}</h3>
+                            <p style="margin: 4px 0 0; color: #C06C4C; font-weight: 700; font-size: 13px;">₹${Number(item.price).toLocaleString('en-IN')}</p>
                         </div>
-                        <button onclick="removeItem(${index})" style="background: #e63946; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px;">Remove</button>
+                        <button onclick="window.removeItem(${index})" style="background: #D90429; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Remove</button>
                     </div>
                 `;
             });
         }
     }
 
-    // Update UI Totals
+    // 2. Update UI Totals across all possible ID variations
     const totalEl = document.getElementById("total");
     const cartTotalValEl = document.getElementById("cart-total-val");
+    const cartTotalSpan = document.getElementById("cartTotal");
 
-    if (totalEl) totalEl.innerText = "Total: ₹" + total;
-    if (cartTotalValEl) cartTotalValEl.innerText = total;
+    if (totalEl) totalEl.innerText = "Total: ₹" + total.toLocaleString('en-IN');
+    if (cartTotalValEl) cartTotalValEl.innerText = total.toLocaleString('en-IN');
+    if (cartTotalSpan) cartTotalSpan.innerText = total.toLocaleString('en-IN');
+
+    // Pay button disable state handle
+    const payBtn = document.querySelector(".btn-pay") || document.querySelector("button[type='submit']");
+    if (payBtn) {
+        payBtn.disabled = total <= 0;
+    }
 }
 
-// Global Remove Item Function (Exposed for HTML onclick)
+// Global Add Item Function (Testing & Store sync)
+window.addToCart = function(name, price) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: name, price: Number(price) });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+};
+
+// Global Remove Item Function
 window.removeItem = function(index) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart(); // Re-render without page reload
+    renderCart(); 
 };
 
-// Global Razorpay Checkout Function (Exposed for HTML onclick/submit)
+// Global Razorpay Checkout Function
 window.payWithRazorpay = function(event) {
     if (event) event.preventDefault();
 
-    const nameEl = document.getElementById("userName");
-    const emailEl = document.getElementById("userEmail");
-    const phoneEl = document.getElementById("userPhone");
+    // Check all possible input ID variations
+    const nameEl = document.getElementById("userName") || document.getElementById("custName") || document.querySelector("input[placeholder*='Name']");
+    const emailEl = document.getElementById("userEmail") || document.getElementById("custEmail") || document.querySelector("input[type='email']");
+    const phoneEl = document.getElementById("userPhone") || document.getElementById("custPhone") || document.querySelector("input[type='tel']");
 
     const name = nameEl ? nameEl.value.trim() : "";
     const email = emailEl ? emailEl.value.trim() : "";
@@ -63,20 +81,20 @@ window.payWithRazorpay = function(event) {
     }
 
     if (total <= 0) {
-        alert("Your shopping cart is empty.");
+        alert("Your shopping cart is empty! Please add products before paying.");
         return;
     }
 
     const options = {
         "key": "rzp_test_TFattys1zBhps1",
-        "amount": Math.round(total * 100), // Convert to Paise
+        "amount": Math.round(total * 100), // Convert INR to Paise
         "currency": "INR",
         "name": "MamRaj Web Studio",
         "description": "Shopping Cart Checkout",
         "handler": function (response) {
             alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
             localStorage.removeItem("cart");
-            window.location.href = "/success.html"; // Redirect to success page
+            window.location.href = "/success.html";
         },
         "prefill": {
             "name": name,
@@ -84,7 +102,7 @@ window.payWithRazorpay = function(event) {
             "contact": phone
         },
         "theme": {
-            "color": "#1E2A5A"
+            "color": "#0A1128"
         },
         "modal": {
             "ondismiss": function () {
@@ -101,30 +119,40 @@ window.payWithRazorpay = function(event) {
         rzp.open();
     } catch (err) {
         console.error("Razorpay Error:", err);
-        alert("Failed to initialize Razorpay checkout popup.");
+        alert("Razorpay checkout failed to initialize. Make sure Razorpay SDK script is included in HTML.");
     }
 };
 
-// Auto-fill Client Profile & Init Cart on Page Load
+// DOM Init
 document.addEventListener("DOMContentLoaded", () => {
     renderCart();
+
+    // Attach submit listener to Billing Form automatically
+    const checkoutForm = document.getElementById("checkoutForm") || document.querySelector("form");
+    if (checkoutForm) {
+        checkoutForm.addEventListener("submit", window.payWithRazorpay);
+    }
 
     // Local Storage Profile Sync
     const savedProfile = JSON.parse(localStorage.getItem("clientProfile"));
     if (savedProfile) {
-        if (document.getElementById("userName") && savedProfile.name) document.getElementById("userName").value = savedProfile.name;
-        if (document.getElementById("userEmail") && savedProfile.email) document.getElementById("userEmail").value = savedProfile.email;
-        if (document.getElementById("userPhone") && savedProfile.phone) document.getElementById("userPhone").value = savedProfile.phone;
+        const nameInput = document.getElementById("userName") || document.getElementById("custName");
+        const emailInput = document.getElementById("userEmail") || document.getElementById("custEmail");
+        const phoneInput = document.getElementById("userPhone") || document.getElementById("custPhone");
+
+        if (nameInput && savedProfile.name) nameInput.value = savedProfile.name;
+        if (emailInput && savedProfile.email) emailInput.value = savedProfile.email;
+        if (phoneInput && savedProfile.phone) phoneInput.value = savedProfile.phone;
     }
 });
 
-// Firebase Auth Auto-Fill Sync (Modular v10)
+// Firebase Auth Sync
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        const userNameEl = document.getElementById("userName");
-        const userEmailEl = document.getElementById("userEmail");
+        const nameInput = document.getElementById("userName") || document.getElementById("custName");
+        const emailInput = document.getElementById("userEmail") || document.getElementById("custEmail");
 
-        if (userNameEl && user.displayName) userNameEl.value = user.displayName;
-        if (userEmailEl && user.email) userEmailEl.value = user.email;
+        if (nameInput && user.displayName) nameInput.value = user.displayName;
+        if (emailInput && user.email) emailInput.value = user.email;
     }
 });
