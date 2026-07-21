@@ -30,40 +30,46 @@
 </head>
 <body>
 
-    <!-- Always Fixed Navbar Header -->
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="images/logo.png" alt="MamRaj Web Studio Logo">
-                </a>
-            </div>
+  <header class="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <img src="logo.png" alt="MamRaj Web Studio Logo">
+    </a>
 
-            <!-- Mobile Hamburger Button -->
-            <div class="menu-toggle" id="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </div>
+    <!-- Mobile Hamburger Toggle -->
+    <div class="menu-toggle" id="menu-toggle">
+      <i class="fa-solid fa-bars"></i>
+    </div>
 
-            <!-- Navigation Links -->
-            <ul class="nav-links" id="nav-links">
-                <!-- Mobile Only Close Button -->
-                <li class="close-menu">
-                    <i class="fas fa-times" id="close-menu"></i>
-                </li>
-                <li><a href="#home">🏠 Home</a></li>
-                <li><a href="#about">👤 About</a></li>
-                <li><a href="#work">💼 Our Work</a></li>
-                <li><a href="#products">📦 Products</a></li>
-                <li><a href="#testimonials">⭐ Testimonials</a></li>
-                <li><a href="#contact">✉ Contact</a></li>
-                <li><a href="auth.html">🔐 My Profile / Login</a></li>
-                <li><a href="cart.html">🛒 Cart <span id="cart-count">0</span></a></li>
-                <li><a href="admin.html" class="admin-btn">🛡️ Admin</a></li>
-            </ul>
-        </nav>
-        <div id="overlay"></div>
-    </header>
+    <!-- Navigation Links -->
+    <nav class="nav-links" id="nav-links">
+      <div class="close-menu" id="close-menu">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      
+      <a href="#home"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="#about"><i class="fa-solid fa-user"></i> About</a>
+      <a href="#work"><i class="fa-solid fa-briefcase"></i> Our Work</a>
+      <a href="#products"><i class="fa-solid fa-box"></i> Products</a>
+      <a href="#testimonials"><i class="fa-solid fa-star"></i> Testimonials</a>
+      <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
+      <a href="/login.html"><i class="fa-solid fa-user-lock"></i> My Profile / Login</a>
+      
+      <!-- Cart Icon with Badge -->
+      <a href="/cart.html" class="cart-link">
+        <i class="fa-solid fa-cart-shopping"></i> Cart
+        <span id="cart-count">0</span>
+      </a>
 
+      <!-- Admin Link -->
+      <a href="/admin.html" class="btn-admin"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile Overlay -->
+<div class="overlay" id="overlay"></div>
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
