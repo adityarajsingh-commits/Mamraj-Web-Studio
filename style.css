@@ -37,82 +37,148 @@ body{
     overflow-x:hidden;
 }
 
-/* ==========================================================================
-   NAVBAR (Always Visible & Fixed Top)
-   ========================================================================== */
-
-header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 10000;
-}
-
+/* ==========================================
+   DESKTOP NAVBAR STYLES
+   ========================================== */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 12px 24px;
+}
+
+.logo img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Horizontal Alignment for Links & Icons */
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #1E2A5A;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #C58B73;
+}
+
+/* Cart Badge */
+.cart-link {
+  position: relative;
+}
+
+#cart-count {
+  background: #C58B73;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+/* Admin Button */
+.btn-admin {
+  background: #1E2A5A;
+  color: #fff !important;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: background 0.3s ease;
+}
+
+.btn-admin:hover {
+  background: #2b1055;
+}
+
+.menu-toggle, .close-menu {
+  display: none;
+  font-size: 24px;
+  color: #1E2A5A;
+  cursor: pointer;
+}
+
+/* ==========================================
+   MOBILE & TABLET RESPONSIVE MENU (< 1024px)
+   ========================================== */
+@media (max-width: 1024px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .close-menu {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden off-screen by default */
+    width: 280px;
+    height: 100vh;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 30px 30px 30px;
+    gap: 20px;
+    box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+  }
+
+  /* Slide-in class triggered via JS */
+  .nav-links.active {
+    right: 0;
+  }
+
+  /* Dimmed Background Overlay */
+  .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 10000;
-    background: var(--white);
-    padding: 15px 8%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    transform: translateY(0) !important;
-    transition: none;
-}
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
 
-.navbar:hover {
-    transform: translateY(0) !important;
+  .overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
 }
-
-.logo{
-    display:flex;
-    align-items:center;
-}
-
-.logo img{
-    height:60px;
-    width:auto;
-    display:block;
-}
-
-.nav-links{
-    display:flex;
-    list-style:none;
-    gap:25px;
-    align-items: center;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:var(--navy);
-    font-weight:500;
-    transition:.3s;
-}
-
-.nav-links a:hover{
-    color:var(--rose);
-}
-
-.admin-btn {
-    background: linear-gradient(135deg, #1E2A5A 0%, #7A5A7A 100%);
-    color: white !important;
-    padding: 8px 16px !important;
-    border-radius: 20px;
-    font-weight: 600 !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Hide Hamburger & Close Icon by default on Desktop */
-.menu-toggle, 
-.close-menu {
-    display: none;
-}
-
 /* Background Overlay for Mobile Menu */
 #overlay {
     position: fixed;
