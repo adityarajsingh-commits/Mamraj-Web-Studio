@@ -347,6 +347,61 @@ window.payWithRazorpay = function() {
     rzp1.open();
 };
 
+// ================= SHIVAAY CHATBOT JAVASCRIPT =================
+    function toggleChat() {
+        const chatBox = document.getElementById('chatContainer');
+        chatBox.style.display = (chatBox.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('userInput');
+        const query = input.value.trim();
+        if (!query) return;
+
+        appendMessage(query, 'user');
+        input.value = '';
+
+        // Simulate Shivaay thinking
+        setTimeout(() => {
+            const botReply = getShivaayResponse(query);
+            appendMessage(botReply, 'bot');
+        }, 500);
+    }
+
+    function appendMessage(text, sender) {
+        const messagesBox = document.getElementById('chatMessages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${sender}`;
+        msgDiv.innerHTML = text;
+        messagesBox.appendChild(msgDiv);
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+    }
+
+    function getShivaayResponse(userQuery) {
+        const q = userQuery.toLowerCase();
+
+        if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
+            return "Hello! How can I assist you with Mamraj Web Studio services today?";
+        } else if (q.includes('payment') || q.includes('pay') || q.includes('razorpay')) {
+            return "We accept all major UPI, Credit/Debit cards, Netbanking, and Wallets via Razorpay Secure Gateway.";
+        } else if (q.includes('total') || q.includes('amount') || q.includes('cart')) {
+            return `Your current order total is <strong>₹${cartTotal}</strong>.`;
+        } else if (q.includes('fail') || q.includes('error') || q.includes('issue')) {
+            return "If your payment fails, please check your mobile number and email fields, or try using UPI directly inside the payment popup.";
+        } else if (q.includes('contact') || q.includes('support')) {
+            return "You can reach out to our team at <strong>support@mamrajwebstudio.com</strong>.";
+        } else {
+            return "I am Shivaay! I'm here to help you complete your checkout at Mamraj Web Studio. Feel free to ask about payments, cart items, or support!";
+        }
+    }
+
+    // Page start load
+    window.onload = loadCartData;
+
 window.addEventListener("load", () => {
     updateCartCount();
     console.log("MamRaj Web Studio Ready 🚀");
