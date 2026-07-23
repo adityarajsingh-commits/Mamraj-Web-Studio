@@ -280,7 +280,7 @@
                 <h4>- Kirti</h4> 
             </div>
             <div class="testimonial-box"> 
-                <p>"Amazing design and excellent support."</p> 
+                <p>"Amazing design and excellent support."</p>
                 <h4>- Diksha</h4> 
             </div>
         </div>
@@ -301,7 +301,34 @@
             <button type="submit">Send Message</button>
         </form>
     </section>
+<!-- ================= SHIVAAY AI CHATBOT WIDGET ================= -->
+<button class="chatbot-toggle-btn" onclick="toggleChat()">
+    🤖 Chat with Shivaay
+</button>
 
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <div class="chat-header-info">
+            <div class="bot-avatar">S</div>
+            <div>
+                <div class="bot-title">Shivaay AI</div>
+                <div class="bot-status">● Assistant Online</div>
+            </div>
+        </div>
+        <button class="close-chat-btn" onclick="toggleChat()">&times;</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot">
+            Namaste! I am <strong>Shivaay</strong>, your AI Assistant. How can I help you with your order or checkout today?
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="userInput" placeholder="Ask Shivaay anything..." onkeypress="handleKeyPress(event)">
+        <button class="chat-send-btn" onclick="sendMessage()">➔</button>
+    </div>
+</div>
     <!-- Footer -->
     <footer>
         <p>© 2026 MamRaj Web Studio. All Rights Reserved.</p>
