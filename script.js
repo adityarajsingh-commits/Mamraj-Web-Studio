@@ -194,7 +194,44 @@ document.addEventListener("DOMContentLoaded", () => {
             cursor.style.top = e.clientY + "px";
         });
     }
+    // ================= STAR RATING =================
 
+const stars = document.querySelectorAll(".star-btn");
+const ratingInput = document.getElementById("review-rating");
+
+if (stars.length) {
+
+    let selectedRating = 0;
+
+    stars.forEach((star, index) => {
+
+        star.addEventListener("mouseover", () => {
+            stars.forEach((s, i) => {
+                s.classList.toggle("active", i <= index);
+            });
+        });
+
+        star.addEventListener("mouseleave", () => {
+            stars.forEach((s, i) => {
+                s.classList.toggle("active", i < selectedRating);
+            });
+        });
+
+        star.addEventListener("click", () => {
+            selectedRating = index + 1;
+
+            if (ratingInput) {
+                ratingInput.value = selectedRating;
+            }
+
+            stars.forEach((s, i) => {
+                s.classList.toggle("active", i < selectedRating);
+            });
+        });
+
+    });
+
+}
     // ----------------------
     // Background Music Auto-Controller
     // ----------------------
