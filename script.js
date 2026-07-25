@@ -10,19 +10,27 @@ import { getDatabase, ref, push, update, remove, onValue } from "https://www.gst
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // Firebase Configuration Details
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA44Ou2bM7l7m-oay-pwv-4tdmn_S0f0BM",
+  authDomain: "mamraj-web-studio-1d78b.firebaseapp.com",
+  projectId: "mamraj-web-studio-1d78b",
+  storageBucket: "mamraj-web-studio-1d78b.firebasestorage.app",
+  messagingSenderId: "229677264871",
+  appId: "1:229677264871:web:cc3937a5733868e31c5742",
+  measurementId: "G-DSK1EM5RKL"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
+const analytics = getAnalytics(app);
 
 // Export Modules for Admin & Public Reviews Logic
 export { db, auth, ref, push, update, remove, onValue, signInWithEmailAndPassword, signOut, onAuthStateChanged };
@@ -198,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const stars = document.querySelectorAll(".star-btn");
 const ratingInput = document.getElementById("review-rating");
-
+const rating = document.getElementById("review-rating").value;
 if (stars.length) {
 
     let selectedRating = 0;
