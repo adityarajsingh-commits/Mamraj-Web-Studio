@@ -1,0 +1,106 @@
+<script>
+
+const customerName =
+localStorage.getItem("customerName") || "Customer";
+
+const customerEmail =
+localStorage.getItem("customerEmail") || "-";
+
+const customerPhone =
+localStorage.getItem("customerPhone") || "-";
+
+const customerAddress =
+localStorage.getItem("customerAddress") || "-";
+
+const paymentId =
+localStorage.getItem("paymentId") || "N/A";
+
+const cart =
+JSON.parse(localStorage.getItem("cartBackup")) ||
+JSON.parse(localStorage.getItem("cart")) || [];
+
+document.getElementById("customerName").innerHTML = customerName;
+
+document.getElementById("customerEmail").innerHTML = customerEmail;
+
+document.getElementById("customerPhone").innerHTML = customerPhone;
+
+document.getElementById("customerAddress").innerHTML = customerAddress;
+
+document.getElementById("invoiceDate").innerHTML =
+new Date().toLocaleDateString("en-IN");
+
+document.getElementById("invoiceNumber").innerHTML =
+"INV-" + Date.now();
+
+let subtotal = 0;
+
+const tbody = document.getElementById("invoiceItems");
+
+cart.forEach(item=>{
+
+    const total=item.price*item.quantity;
+
+    subtotal+=total;
+
+    tbody.innerHTML += `
+
+<tr>
+
+<td>${item.name}</td>
+
+<td>${item.quantity}</td>
+
+<td>₹${item.price.toLocaleString("en-IN")}</td>
+
+<td>₹${total.toLocaleString("en-IN")}</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("subTotal").innerHTML =
+"₹"+subtotal.toLocaleString("en-IN");
+
+document.getElementById("grandTotalInvoice").innerHTML =
+"₹"+subtotal.toLocaleString("en-IN");
+
+const paymentBox=document.createElement("div");
+
+paymentBox.style.marginTop="25px";
+
+paymentBox.innerHTML=`
+
+<h3>Payment Details</h3>
+
+<p>
+
+<strong>Payment ID:</strong>
+
+${paymentId}
+
+</p>
+
+<p>
+
+<strong>Status:</strong>
+
+<span style="color:green;">
+
+Paid
+
+</span>
+
+</p>
+
+`;
+
+document.querySelector(".invoice-card").appendChild(paymentBox);
+
+</script>
+
+</body>
+
+</html>
