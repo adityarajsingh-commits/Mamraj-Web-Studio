@@ -1457,5 +1457,130 @@ grid-template-columns:1fr;
 
 }
 
+/* ======================================
+   BILLING FORM
+====================================== */
+
+.checkout-page{
+    width:90%;
+    max-width:1400px;
+    margin:50px auto;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:35px;
+    align-items:start;
+}
+
+.checkout-left{
+    width:100%;
+}
+
+.checkout-right{
+    width:100%;
+}
+
+.billing-card{
+    background:#ffffff;
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.billing-card h2{
+    color:#1E2A5A;
+    font-size:36px;
+    margin-bottom:30px;
+    text-align:center;
+}
+
+#billingForm{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    font-size:15px;
+    font-weight:600;
+    color:#333;
+    margin-bottom:8px;
+}
+
+.input-group input,
+.input-group textarea{
+
+    width:100%;
+
+    padding:15px 18px;
+
+    border:1px solid #dcdcdc;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    font-family:'Poppins',sans-serif;
+
+    transition:.3s;
+
+    outline:none;
+
+    box-sizing:border-box;
+
+    background:#fafafa;
+
+}
+
+.input-group textarea{
+
+    resize:vertical;
+
+    min-height:120px;
+
+}
+
+.input-group input:focus,
+.input-group textarea:focus{
+
+    border-color:#1E2A5A;
+
+    background:#fff;
+
+    box-shadow:0 0 12px rgba(30,42,90,.15);
+
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder{
+
+    color:#999;
+
+}
+
+@media(max-width:992px){
+
+.checkout-page{
+
+grid-template-columns:1fr;
+
+}
+
+.billing-card{
+
+padding:25px;
+
+}
+
+.billing-card h2{
+
+font-size:28px;
+
+}
+
 }
 }
