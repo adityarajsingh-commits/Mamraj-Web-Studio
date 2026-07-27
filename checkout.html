@@ -1,0 +1,143 @@
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cartTotal = 0;
+
+function loadCheckoutItems() {
+
+    const container = document.getElementById("checkoutItems");
+
+    container.innerHTML = "";
+
+    cartTotal = 0;
+
+    if(cart.length === 0){
+
+        container.innerHTML = `
+        <p style="text-align:center;padding:20px;">
+            Your cart is empty.
+        </p>`;
+
+        document.getElementById("subtotal").innerHTML = "0";
+        document.getElementById("grandTotal").innerHTML = "0";
+
+        return;
+    }
+
+    cart.forEach(item=>{
+
+        const total=item.price*item.quantity;
+
+        cartTotal+=total;
+
+        container.innerHTML += `
+
+<div class="cart-item-row">
+
+<div>
+
+<h4>${item.name}</h4>
+
+<p>
+
+₹${item.price.toLocaleString("en-IN")}
+
+× ${item.quantity}
+
+</p>
+
+</div>
+
+<strong>
+
+₹${total.toLocaleString("en-IN")}
+
+</strong>
+
+</div>
+
+`;
+
+    });
+
+    document.getElementById("subtotal").innerHTML =
+    cartTotal.toLocaleString("en-IN");
+
+    document.getElementById("grandTotal").innerHTML =
+    cartTotal.toLocaleString("en-IN");
+
+}
+
+loadCheckoutItems();
+
+function initiateRazorpayPayment(){
+
+    const name=document.getElementById("name").value.trim();
+
+    const email=document.getElementById("email").value.trim();
+
+    const phone=document.getElementById("phone").value.trim();
+
+    const address=document.getElementById("address").value.trim();
+
+    if(!name || !email || !phone || !address){
+
+        alert("Please fill all required fields.");
+
+        return;
+
+    }
+
+    var options={
+
+        key:"rzp_live_TH1wKGPDAZVVKo",
+
+        amount:cartTotal*100,
+
+        currency:"INR",
+
+        name:"MamRaj Web Studio",
+
+        description:"Website Development Services",
+
+        image:"images/logo.png",
+
+        handler:function(response){
+
+            alert("Payment Successful!");
+
+            localStorage.removeItem("cart");
+
+            window.location.href="success.html";
+
+        },
+
+        prefill:{
+
+            name:name,
+
+            email:email,
+
+            contact:phone
+
+        },
+
+        theme:{
+
+            color:"#1E2A5A"
+
+        }
+
+    };
+
+    const rzp=new Razorpay(options);
+
+    rzp.open();
+
+}
+
+</script>
+
+</body>
+
+</html>
