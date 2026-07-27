@@ -1,451 +1,221 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Mamraj Web Studio</title>
-    <!-- Razorpay Checkout SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+// ===============================
+// CART.JS
+// ===============================
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #eaeded;
-            color: #0f1111;
-            padding: 20px 10px;
-        }
+// ----------------------
+// Save Cart
+// ----------------------
 
-        /* Amazon Header Style */
-        .checkout-header {
-            max-width: 1100px;
-            margin: 0 auto 20px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
 
-        .checkout-header h1 {
-            font-size: 22px;
-            color: #111;
-            font-weight: 600;
-        }
+// ----------------------
+// Update Cart Badge
+// ----------------------
 
-        .secure-badge {
-            color: #007600;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+function updateCartBadge() {
 
-        /* Main Grid Container */
-        .checkout-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 20px;
-        }
+    const badge = document.getElementById("cart-count");
 
-        @media (max-width: 850px) {
-            .checkout-container {
-                grid-template-columns: 1fr;
-            }
-        }
+    if (!badge) return;
 
-        /* Left Side Sections */
-        .checkout-left {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    let total = 0;
 
-        .card {
-            background-color: #ffffff;
-            border: 1px solid #d5d9d9;
-            border-radius: 8px;
-            padding: 20px;
-        }
+    cart.forEach(item => {
 
-        .card h3 {
-            font-size: 18px;
-            color: #0f1111;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e7e7e7;
-        }
+        total += item.quantity;
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+    });
 
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 13px;
-            color: #111;
-        }
+    badge.innerText = total;
 
-        .input-group input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #888c8c;
-            border-radius: 4px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
+}
 
-        .input-group input:focus {
-            border-color: #e77600;
-            box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5);
-        }
+// ----------------------
+// Add Item
+// ----------------------
 
-        /* Cart Items List Style */
-        .cart-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
+function addToCart(name, price) {
 
-        .cart-item-row:last-child {
-            border-bottom: none;
-        }
+    const existing = cart.find(item => item.name === name);
 
-        .cart-item-title {
-            font-weight: 600;
-            color: #0066c0;
-            margin-bottom: 5px;
-        }
+    if (existing) {
 
-        .cart-item-price {
-            font-weight: bold;
-            color: #b12704;
-            font-size: 16px;
-        }
+        existing.quantity++;
 
-        /* Quantity & Action Controls (NEW) */
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 5px;
-        }
+    } else {
 
-        .btn-qty {
-            background-color: #f0f2f2;
-            border: 1px solid #d5d9d9;
-            border-radius: 4px;
-            width: 26px;
-            height: 26px;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-        }
+        cart.push({
 
-        .btn-qty:hover {
-            background-color: #e3e6e6;
-        }
+            name: name,
 
-        .qty-count {
-            font-weight: bold;
-            font-size: 14px;
-            padding: 0 4px;
-        }
+            price: price,
 
-        .btn-remove {
-            color: #0066c0;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-            margin-left: 10px;
-            text-decoration: underline;
-        }
+            quantity: 1
 
-        .btn-remove:hover {
-            color: #c40000;
-        }
-
-        /* Right Side Summary Card */
-        .summary-card {
-            background-color: #ffffff;
-            border: 1px solid #d5d9d9;
-            border-radius: 8px;
-            padding: 20px;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .summary-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #e7e7e7;
-            padding-bottom: 8px;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
-            font-weight: bold;
-            color: #b12704;
-            border-top: 1px solid #e7e7e7;
-            padding-top: 12px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* Payment Button Styling */
-        .btn-pay {
-            width: 100%;
-            background: #ffd814;
-            border: 1px solid #fcd200;
-            color: #0f1111;
-            padding: 12px;
-            border-radius: 20px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
-            transition: background 0.2s;
-        }
-
-        .btn-pay:hover {
-            background: #f7ca00;
-            border-color: #f2c200;
-        }
-
-        .security-text {
-            font-size: 12px;
-            color: #565959;
-            text-align: center;
-            margin-top: 12px;
-        }
-    </style>
-</head>
-<body>
-
-<!-- Amazon Style Header -->
-<div class="checkout-header">
-    <h1>Mamraj Web Studio Checkout</h1>
-    <div class="secure-badge">🔒 256-Bit SSL Secure Checkout</div>
-</div>
-
-<div class="checkout-container">
-    
-    <!-- LEFT COLUMN: User Input & Item Review -->
-    <div class="checkout-left">
-        
-        <!-- Billing Details Section -->
-        <div class="card">
-            <h3>1. Billing & Contact Details</h3>
-            
-            <div class="input-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" placeholder="e.g. Aditya Raj Singh" required>
-            </div>
-
-            <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" required>
-            </div>
-
-            <div class="input-group">
-                <label for="mobile">Mobile Number</label>
-                <input type="tel" id="mobile" required>
-            </div>
-        </div>
-
-        <!-- Cart Items Section -->
-        <div class="card">
-            <h3>2. Review Items</h3>
-            <div id="cartItems">
-                <!-- Dynamic Items with Add/Remove -->
-            </div>
-        </div>
-
-    </div>
-
-    <!-- RIGHT COLUMN: Order Summary Box -->
-    <div class="checkout-right">
-        <div class="summary-card">
-            <div class="summary-title">Order Summary</div>
-            
-            <div class="summary-row">
-                <span>Items:</span>
-                <span>₹<span id="itemsSubtotal">0</span></span>
-            </div>
-
-            <div class="summary-row">
-                <span>Taxes & Fees:</span>
-                <span>₹0</span>
-            </div>
-
-            <div class="summary-total">
-                <span>Order Total:</span>
-                <span>₹<span id="totalAmount">0</span></span>
-            </div>
-
-            <!-- UNTOUCHED PAYMENT BUTTON -->
-            <button type="button" class="btn-pay" id="payBtn" onclick="initiateRazorpayPayment()">Pay Now Securely</button>
-
-            <div class="security-text">
-                💳 Powered by Razorpay Secure Gateway
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- SCRIPT SECTION -->
-<script>
-    // 1. YOUR RAZORPAY KEY HERE
-    const RAZORPAY_KEY = "rzp_live_TH1wKGPDAZVVKo"; 
-
-    let cartTotal = 0;
-
-    // 2. Load Cart Data with Add/Remove Support
-    function loadCartData() {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartContainer = document.getElementById('cartItems');
-
-        if (cartItems.length === 0) {
-            cartTotal = 0; 
-            cartContainer.innerHTML = "<p style='color: #777;'>Aapka cart khali hai.</p>";
-        } else {
-            cartContainer.innerHTML = '';
-            cartTotal = 0;
-
-            cartItems.forEach((item, index) => {
-                const itemQty = item.quantity || 1;
-                const itemPrice = item.price * itemQty;
-                cartTotal += itemPrice;
-
-                cartContainer.innerHTML += `
-                    <div class="cart-item-row">
-                        <div>
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="qty-controls">
-                                <button class="btn-qty" onclick="changeQuantity(${index}, -1)">-</button>
-                                <span class="qty-count">${itemQty}</span>
-                                <button class="btn-qty" onclick="changeQuantity(${index}, 1)">+</button>
-                                <button class="btn-remove" onclick="removeItem(${index})">Remove</button>
-                            </div>
-                        </div>
-                        <div class="cart-item-price">₹${itemPrice}</div>
-                    </div>
-                `;
-            });
-        }
-
-        // HTML Total Updates
-        document.getElementById('totalAmount').innerText = cartTotal;
-        document.getElementById('itemsSubtotal').innerText = cartTotal;
-    }
-
-    // 🌟 NEW FUNCTION: Quantity (+ / -) Change Karne Ke Liye
-    function changeQuantity(index, change) {
-        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        if (cartItems[index]) {
-            cartItems[index].quantity = (cartItems[index].quantity || 1) + change;
-            
-            // Agar quantity 1 se kam ho, to item remove kar do
-            if (cartItems[index].quantity <= 0) {
-                cartItems.splice(index, 1);
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cartItems));
-            loadCartData(); // Re-render cart UI
-        }
-    }
-
-    // 🌟 NEW FUNCTION: Item Direct Remove Karne Ke Liye
-    function removeItem(index) {
-        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-        cartItems.splice(index, 1);
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        loadCartData(); // Re-render cart UI
-    }
-
-    // 3. Razorpay Payment Trigger Function (BILKUL UNTOUCHED)
-    function initiateRazorpayPayment() {
-        const name = document.getElementById('fullName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const mobile = document.getElementById('mobile').value.trim();
-
-        // Validation Checks
-        if (!name || !email || !mobile) {
-            alert("Kripya saari Details (Name, Email, Mobile) fill karein!");
-            return;
-        }
-
-        if (cartTotal <= 0) {
-            alert("Cart me koi item nahi hai ya amount 0 hai!");
-            return;
-        }
-
-        // Razorpay SDK Options
-        const options = {
-            "key": RAZORPAY_KEY, 
-            "amount": cartTotal * 100, // Amount INR se Paise me convert (₹1 = 100 paise)
-            "currency": "INR",
-            "name": "Mamraj Web Studio",
-            "description": "Cart Payment Checkout",
-            "prefill": {
-                "name": name,
-                "email": email,
-                "contact": mobile
-            },
-            "theme": {
-                "color": "#3399cc"
-            },
-            "handler": function (response) {
-                // Successful Payment Callbacks
-                alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-
-                // Clear Cart after payment
-                localStorage.removeItem('cart');
-                window.location.reload();
-            }
-        };
-
-        const rzp1 = new Razorpay(options);
-        rzp1.on('payment.failed', function (response){
-            alert("Payment Failed! Code: " + response.error.code + " - " + response.error.description);
         });
 
-        rzp1.open();
     }
 
-    // Page start hote hi cart load karein
-    window.onload = loadCartData;
-</script>
+    saveCart();
 
-</body>
-</html>
+    updateCartBadge();
+
+    alert(name + " added to cart.");
+
+}
+
+// ----------------------
+// Remove Item
+// ----------------------
+
+function removeItem(index) {
+
+    cart.splice(index,1);
+
+    saveCart();
+
+    updateCartBadge();
+
+    loadCart();
+
+}
+
+// ----------------------
+// Quantity +
+// ----------------------
+
+function increaseQty(index){
+
+    cart[index].quantity++;
+
+    saveCart();
+
+    updateCartBadge();
+
+    loadCart();
+
+}
+
+// ----------------------
+// Quantity -
+// ----------------------
+
+function decreaseQty(index){
+
+    cart[index].quantity--;
+
+    if(cart[index].quantity<=0){
+
+        cart.splice(index,1);
+
+    }
+
+    saveCart();
+
+    updateCartBadge();
+
+    loadCart();
+
+}
+
+// ----------------------
+// Load Cart
+// ----------------------
+
+function loadCart(){
+
+    const container=document.getElementById("cartItems");
+
+    if(!container) return;
+
+    container.innerHTML="";
+
+    let total=0;
+
+    if(cart.length===0){
+
+        container.innerHTML="<h3>Your cart is empty.</h3>";
+
+        document.getElementById("itemsSubtotal").innerText="0";
+
+        document.getElementById("totalAmount").innerText="0";
+
+        return;
+
+    }
+
+    cart.forEach((item,index)=>{
+
+        total += item.price * item.quantity;
+
+        container.innerHTML +=`
+
+<div class="cart-item-row">
+
+<div>
+
+<div class="cart-item-title">${item.name}</div>
+
+<div class="qty-controls">
+
+<button class="btn-qty" onclick="decreaseQty(${index})">-</button>
+
+<span class="qty-count">${item.quantity}</span>
+
+<button class="btn-qty" onclick="increaseQty(${index})">+</button>
+
+<button class="btn-remove" onclick="removeItem(${index})">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+<div class="cart-item-price">
+
+₹${item.price * item.quantity}
+
+</div>
+
+</div>
+
+`;
+
+    });
+
+    document.getElementById("itemsSubtotal").innerText=total;
+
+    document.getElementById("totalAmount").innerText=total;
+
+}
+
+// ----------------------
+// Global Access
+// ----------------------
+
+window.addToCart=addToCart;
+
+window.removeItem=removeItem;
+
+window.increaseQty=increaseQty;
+
+window.decreaseQty=decreaseQty;
+
+// ----------------------
+// On Load
+// ----------------------
+
+window.addEventListener("load",()=>{
+
+    updateCartBadge();
+
+    loadCart();
+
+});
