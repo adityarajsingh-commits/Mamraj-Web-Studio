@@ -3,19 +3,36 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <title>Checkout | MamRaj Web Studio</title>
+<title>Checkout | MamRaj Web Studio</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+href="style.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
 
-    <script src="cart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+<!-- Razorpay -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- Cart Script -->
+
+<script src="cart.js" defer></script>
 
 </head>
 
@@ -23,116 +40,398 @@
 
 <header class="cart-header">
 
-    <div class="logo">
-        <a href="index.html">
-            <img src="images/logo.png" alt="Logo">
-        </a>
-    </div>
+<div class="logo">
 
-    <div class="cart-title">
-        <h2>Secure Checkout</h2>
-    </div>
+<a href="index.html">
 
-    <div class="continue-shopping">
-        <a href="cart.html">← Back to Cart</a>
-    </div>
+<img src="images/logo.png"
+alt="MamRaj Web Studio">
+
+</a>
+
+</div>
+
+<div class="cart-title">
+
+<h2>
+
+Secure Checkout
+
+</h2>
+
+</div>
+
+<div class="continue-shopping">
+
+<a href="cart.html">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back To Cart
+
+</a>
+
+</div>
 
 </header>
 
-<section class="checkout-container">
+<section class="checkout-page">
 
-    <!-- Billing Details -->
+<div class="checkout-left">
 
-    <div class="billing-section">
+<div class="billing-card">
 
-        <h2>Billing Details</h2>
+<h2>
 
-        <form id="billingForm">
+Billing Details
 
-            <div class="input-group">
-                <label>Full Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Enter Full Name"
-                    required>
-            </div>
+</h2>
 
-            <div class="input-group">
-                <label>Email Address</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter Email"
-                    required>
-            </div>
+<form id="billingForm">
 
-            <div class="input-group">
-                <label>Phone Number</label>
-                <input
-                    type="tel"
-                    id="phone"
-                    placeholder="Enter Mobile Number"
-                    required>
-            </div>
+<div class="input-group">
 
-            <div class="input-group">
-                <label>Company Name</label>
-                <input
-                    type="text"
-                    id="company"
-                    placeholder="Optional">
-            </div>
+<label>
 
-            <div class="input-group">
-                <label>Address</label>
-                <textarea
-                    id="address"
-                    rows="4"
-                    placeholder="Enter Complete Address"
-                    required></textarea>
-            </div>
+Full Name
 
-        </form>
+</label>
 
-    </div>
+<input
+type="text"
+id="name"
+placeholder="Enter your name"
+required>
 
-    <!-- Order Summary -->
+</div>
 
-    <div class="order-summary">
+<div class="input-group">
 
-        <h2>Order Summary</h2>
+<label>
 
-        <div id="checkoutItems">
+Email
 
-            <!-- Dynamic Cart Items -->
+</label>
 
-        </div>
+<input
+type="email"
+id="email"
+placeholder="Enter email"
+required>
 
-        <hr>
+</div>
 
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <strong>₹<span id="subtotal">0</span></strong>
-        </div>
+<div class="input-group">
 
-        <div class="summary-row">
-            <span>GST</span>
-            <strong>₹0</strong>
-        </div>
+<label>
 
-        <div class="summary-row total">
-            <span>Total</span>
-            <strong>₹<span id="grandTotal">0</span></strong>
-        </div>
+Phone Number
+
+</label>
+
+<input
+type="tel"
+id="phone"
+placeholder="Enter mobile number"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Company Name
+
+</label>
+
+<input
+type="text"
+id="company"
+placeholder="Optional">
+
+</div>
+
+<div class="input-group">
+
+<label>
+
+Address
+
+</label>
+
+<textarea
+id="address"
+rows="5"
+placeholder="Enter complete address"
+required></textarea>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<div class="checkout-right">
+
+<div class="summary-card">
+
+<h2>
+
+Order Summary
+
+</h2>
+
+<hr>
+
+<div id="checkoutItems">
+
+<!-- Dynamic Items -->
+
+</div>
+
+<hr>
+
+<div class="summary-row">
+
+<span>
+
+Subtotal
+
+</span>
+
+<strong>
+
+₹<span id="subtotal">
+
+0
+
+</span>
+
+</strong>
+
+</div>
+
+<div class="summary-row">
+
+<span>
+
+GST
+
+</span>
+
+<strong>
+
+₹0
+
+</strong>
+
+</div>
+
+<div class="summary-row total">
+
+<span>
+
+Grand Total
+
+</span>
+
+<strong>
+
+₹<span id="grandTotal">
+
+0
+
+</span>
+
+</strong>
+
+</div>
+<!-- Coupon Section -->
+
+<div class="coupon-box">
+
+    <h3>Have a Coupon?</h3>
+
+    <div class="coupon-input">
+
+        <input
+            type="text"
+            id="coupon"
+            placeholder="Enter Coupon Code">
 
         <button
-            class="checkout-btn" onclick="initiateRazorpayPayment()">
+            type="button"
+            onclick="applyCoupon()">
 
-            Proceed To Pay
+            Apply
 
         </button>
 
     </div>
 
+    <small id="couponMessage"></small>
+
+</div>
+
+<!-- Secure Payment -->
+
+<div class="payment-info">
+
+    <h3>Secure Payment</h3>
+
+    <p>
+
+        🔒 Your payment is secured using Razorpay SSL Encryption.
+
+    </p>
+
+    <div class="payment-icons">
+
+        <i class="fa-brands fa-cc-visa"></i>
+
+        <i class="fa-brands fa-cc-mastercard"></i>
+
+        <i class="fa-brands fa-google-pay"></i>
+
+        <i class="fa-solid fa-credit-card"></i>
+
+    </div>
+
+</div>
+
+<button
+class="checkout-btn"
+onclick="initiateRazorpayPayment()">
+
+<i class="fa-solid fa-lock"></i>
+
+Proceed To Pay
+
+</button>
+
+</div>
+
+<!-- Customer Support -->
+
+<div class="support-card">
+
+<h3>
+
+Need Help?
+
+</h3>
+
+<p>
+
+📞 +91 XXXXX XXXXX
+
+</p>
+
+<p>
+
+✉ contact@mamrajwebstudio.in
+
+</p>
+
+<p>
+
+🌐 www.mamrajwebstudio.in
+
+</p>
+
+<p>
+
+Our team is available Monday to Saturday.
+
+</p>
+
+</div>
+
+</div>
+
 </section>
+
+<footer class="cart-footer">
+
+<div class="footer-container">
+
+<div>
+
+<h3>
+
+MamRaj Web Studio
+
+</h3>
+
+<p>
+
+Professional Website Development Company
+
+</p>
+
+</div>
+
+<div>
+
+<h4>
+
+Quick Links
+
+</h4>
+
+<a href="index.html">
+
+Home
+
+</a>
+
+<a href="cart.html">
+
+Cart
+
+</a>
+
+<a href="index.html#contact">
+
+Contact
+
+</a>
+
+</div>
+
+<div>
+
+<h4>
+
+Secure Payments
+
+</h4>
+
+<p>
+
+Powered by Razorpay
+
+</p>
+
+<p>
+
+100% Secure Checkout
+
+</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+
+© 2026 MamRaj Web Studio. All Rights Reserved.
+
+</p>
+
+</footer>
