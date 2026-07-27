@@ -9,7 +9,11 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 // ----------------------
 
 function saveCart() {
+
     localStorage.setItem("cart", JSON.stringify(cart));
+
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+
 }
 
 // ----------------------
@@ -59,13 +63,15 @@ function addToCart(name, price) {
         });
 
     }
+saveCart();
 
-    saveCart();
+cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    updateCartBadge();
+updateCartBadge();
 
-    alert(name + " added to cart.");
+console.log(cart);
 
+alert(name + " added to cart.");
 }
 
 // ----------------------
@@ -212,10 +218,13 @@ window.decreaseQty=decreaseQty;
 // On Load
 // ----------------------
 
-window.addEventListener("load",()=>{
+window.addEventListener("DOMContentLoaded", () => {
+
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     updateCartBadge();
 
     loadCart();
 
+});
 });
