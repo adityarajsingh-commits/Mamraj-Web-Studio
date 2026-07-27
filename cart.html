@@ -1,230 +1,309 @@
-// ===============================
-// CART.JS
-// ===============================
+<!DOCTYPE html>
+<html lang="en">
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<head>
 
-// ----------------------
-// Save Cart
-// ----------------------
+<meta charset="UTF-8">
 
-function saveCart() {
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+<title>Shopping Cart | MamRaj Web Studio</title>
 
-    cart = JSON.parse(localStorage.getItem("cart")) || [];
+<link rel="stylesheet"
+href="style.css">
 
-}
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-// ----------------------
-// Update Cart Badge
-// ----------------------
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
 
-function updateCartBadge() {
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
 
-    const badge = document.getElementById("cart-count");
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    if (!badge) return;
+</head>
 
-    let total = 0;
+<body>
 
-    cart.forEach(item => {
+<header class="cart-header">
 
-        total += item.quantity;
+<div class="logo">
 
-    });
+<a href="index.html">
 
-    badge.innerText = total;
+<img src="images/logo.png">
 
-}
+</a>
 
-// ----------------------
-// Add Item
-// ----------------------
+</div>
 
-function addToCart(name, price) {
+<div class="cart-title">
 
-    const existing = cart.find(item => item.name === name);
+<h2>
 
-    if (existing) {
+Shopping Cart
 
-        existing.quantity++;
+</h2>
 
-    } else {
+</div>
 
-        cart.push({
+<div class="continue-shopping">
 
-            name: name,
+<a href="index.html">
 
-            price: price,
+<i class="fa-solid fa-arrow-left"></i>
 
-            quantity: 1
+Continue Shopping
 
-        });
+</a>
 
-    }
-saveCart();
+</div>
 
-cart = JSON.parse(localStorage.getItem("cart")) || [];
+</header>
 
-updateCartBadge();
+<div class="cart-wrapper">
 
-console.log(cart);
+<div class="cart-left">
 
-alert(name + " added to cart.");
-}
+<h3>
 
-// ----------------------
-// Remove Item
-// ----------------------
+Your Items
 
-function removeItem(index) {
+</h3>
 
-    cart.splice(index,1);
+<div id="cartItems">
 
-    saveCart();
-
-    updateCartBadge();
-
-    loadCart();
-
-}
-
-// ----------------------
-// Quantity +
-// ----------------------
-
-function increaseQty(index){
-
-    cart[index].quantity++;
-
-    saveCart();
-
-    updateCartBadge();
-
-    loadCart();
-
-}
-
-// ----------------------
-// Quantity -
-// ----------------------
-
-function decreaseQty(index){
-
-    cart[index].quantity--;
-
-    if(cart[index].quantity<=0){
-
-        cart.splice(index,1);
-
-    }
-
-    saveCart();
-
-    updateCartBadge();
-
-    loadCart();
-
-}
-
-// ----------------------
-// Load Cart
-// ----------------------
-
-function loadCart(){
-
-    const container=document.getElementById("cartItems");
-
-    if(!container) return;
-
-    container.innerHTML="";
-
-    let total=0;
-
-    if(cart.length===0){
-
-        container.innerHTML="<h3>Your cart is empty.</h3>";
-
-        document.getElementById("itemsSubtotal").innerText="0";
-
-        document.getElementById("totalAmount").innerText="0";
-
-        return;
-
-    }
-
-    cart.forEach((item,index)=>{
-
-        total += item.price * item.quantity;
-
-        container.innerHTML +=`
-
-<div class="cart-item-row">
-
-<div>
-
-<div class="cart-item-title">${item.name}</div>
-
-<div class="qty-controls">
-
-<button class="btn-qty" onclick="decreaseQty(${index})">-</button>
-
-<span class="qty-count">${item.quantity}</span>
-
-<button class="btn-qty" onclick="increaseQty(${index})">+</button>
-
-<button class="btn-remove" onclick="removeItem(${index})">
-
-Remove
-
-</button>
+<!-- Dynamic -->
 
 </div>
 
 </div>
 
-<div class="cart-item-price">
+<div class="cart-right">
 
-₹${item.price * item.quantity}
+<div class="summary-card">
+
+<h2>
+
+Order Summary
+
+</h2>
+
+<hr>
+
+<div class="summary-row">
+
+<span>
+
+Items Total
+
+</span>
+
+<strong>
+
+₹<span id="itemsSubtotal">
+
+0
+
+</span>
+
+</strong>
+
+</div>
+
+<div class="summary-row">
+
+<span>
+
+GST
+
+</span>
+
+<strong>
+
+₹0
+
+</strong>
+
+</div>
+
+<div class="summary-row total">
+
+<span>
+
+Grand Total
+
+</span>
+
+<strong>
+
+₹<span id="totalAmount">
+
+0
+
+</span>
+
+</strong>
+
+</div>
+
+<a
+href="checkout.html"
+class="checkout-btn">
+
+Proceed To Checkout
+
+</a>
 
 </div>
 
 </div>
 
-`;
+</div> 
+    
+            <!-- Empty Cart Message -->
+        <div class="empty-cart" id="emptyCart" style="display:none;">
 
-    });
+            <img src="images/empty-cart.png"
+                 alt="Empty Cart">
 
-    document.getElementById("itemsSubtotal").innerText=total;
+            <h2>Your Cart is Empty</h2>
 
-    document.getElementById("totalAmount").innerText=total;
+            <p>
+                Looks like you haven't added any services yet.
+            </p>
 
-}
+            <a href="index.html" class="shop-btn">
+                Browse Services
+            </a>
 
-// ----------------------
-// Global Access
-// ----------------------
+        </div>
 
-window.addToCart=addToCart;
+    </div>
 
-window.removeItem=removeItem;
+    <!-- Recommended Services -->
 
-window.increaseQty=increaseQty;
+    <section class="recommended-section">
 
-window.decreaseQty=decreaseQty;
+        <h2>You may also like</h2>
 
-// ----------------------
-// On Load
-// ----------------------
+        <div class="recommend-grid">
 
-window.addEventListener("DOMContentLoaded", () => {
+            <div class="recommend-card">
 
-    cart = JSON.parse(localStorage.getItem("cart")) || [];
+                <img src="images/basic.jpg">
 
-    updateCartBadge();
+                <h3>Starter Website</h3>
 
-    loadCart();
+                <p>₹4,999</p>
 
-});
-});
+                <button
+                onclick="addToCart('Starter Website',4999)">
+                    Add To Cart
+                </button>
+
+            </div>
+
+            <div class="recommend-card">
+
+                <img src="images/pro.jpg">
+
+                <h3>Professional Website</h3>
+
+                <p>₹9,999</p>
+
+                <button
+                onclick="addToCart('Professional Website',9999)">
+                    Add To Cart
+                </button>
+
+            </div>
+
+            <div class="recommend-card">
+
+                <img src="images/premium.jpg">
+
+                <h3>E-Commerce Website</h3>
+
+                <p>₹19,999</p>
+
+                <button
+                onclick="addToCart('E-Commerce Website',19999)">
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer class="cart-footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <h3>MamRaj Web Studio</h3>
+
+                <p>
+                    Building Modern Digital Experiences
+                </p>
+
+            </div>
+
+            <div>
+
+                <h4>Quick Links</h4>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#products">
+                    Products
+                </a>
+
+                <a href="index.html#contact">
+                    Contact
+                </a>
+
+            </div>
+
+            <div>
+
+                <h4>Contact</h4>
+
+                <p>contact@mamrajwebstudio.in</p>
+
+                <p>www.mamrajwebstudio.in</p>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <p class="copyright">
+
+            © 2026 MamRaj Web Studio.
+            All Rights Reserved.
+
+        </p>
+
+    </footer>
+
+    <!-- Cart JS -->
+
+    <script src="cart.js"></script>
+
+</body>
+
+</html>
