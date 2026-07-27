@@ -1,143 +1,139 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let cartTotal = 0;
+<head>
 
-function loadCheckoutItems() {
+    <meta charset="UTF-8">
 
-    const container = document.getElementById("checkoutItems");
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    container.innerHTML = "";
+    <title>Checkout | MamRaj Web Studio</title>
 
-    cartTotal = 0;
+    <link rel="stylesheet" href="style.css">
 
-    if(cart.length === 0){
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        container.innerHTML = `
-        <p style="text-align:center;padding:20px;">
-            Your cart is empty.
-        </p>`;
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-        document.getElementById("subtotal").innerHTML = "0";
-        document.getElementById("grandTotal").innerHTML = "0";
+    <script src="cart.js"></script>
 
-        return;
-    }
+</head>
 
-    cart.forEach(item=>{
+<body>
 
-        const total=item.price*item.quantity;
+<header class="cart-header">
 
-        cartTotal+=total;
+    <div class="logo">
+        <a href="index.html">
+            <img src="images/logo.png" alt="Logo">
+        </a>
+    </div>
 
-        container.innerHTML += `
+    <div class="cart-title">
+        <h2>Secure Checkout</h2>
+    </div>
 
-<div class="cart-item-row">
+    <div class="continue-shopping">
+        <a href="cart.html">← Back to Cart</a>
+    </div>
 
-<div>
+</header>
 
-<h4>${item.name}</h4>
+<section class="checkout-container">
 
-<p>
+    <!-- Billing Details -->
 
-₹${item.price.toLocaleString("en-IN")}
+    <div class="billing-section">
 
-× ${item.quantity}
+        <h2>Billing Details</h2>
 
-</p>
+        <form id="billingForm">
 
-</div>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter Full Name"
+                    required>
+            </div>
 
-<strong>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter Email"
+                    required>
+            </div>
 
-₹${total.toLocaleString("en-IN")}
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter Mobile Number"
+                    required>
+            </div>
 
-</strong>
+            <div class="input-group">
+                <label>Company Name</label>
+                <input
+                    type="text"
+                    id="company"
+                    placeholder="Optional">
+            </div>
 
-</div>
+            <div class="input-group">
+                <label>Address</label>
+                <textarea
+                    id="address"
+                    rows="4"
+                    placeholder="Enter Complete Address"
+                    required></textarea>
+            </div>
 
-`;
+        </form>
 
-    });
+    </div>
 
-    document.getElementById("subtotal").innerHTML =
-    cartTotal.toLocaleString("en-IN");
+    <!-- Order Summary -->
 
-    document.getElementById("grandTotal").innerHTML =
-    cartTotal.toLocaleString("en-IN");
+    <div class="order-summary">
 
-}
+        <h2>Order Summary</h2>
 
-loadCheckoutItems();
+        <div id="checkoutItems">
 
-function initiateRazorpayPayment(){
+            <!-- Dynamic Cart Items -->
 
-    const name=document.getElementById("name").value.trim();
+        </div>
 
-    const email=document.getElementById("email").value.trim();
+        <hr>
 
-    const phone=document.getElementById("phone").value.trim();
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>₹<span id="subtotal">0</span></strong>
+        </div>
 
-    const address=document.getElementById("address").value.trim();
+        <div class="summary-row">
+            <span>GST</span>
+            <strong>₹0</strong>
+        </div>
 
-    if(!name || !email || !phone || !address){
+        <div class="summary-row total">
+            <span>Total</span>
+            <strong>₹<span id="grandTotal">0</span></strong>
+        </div>
 
-        alert("Please fill all required fields.");
+        <button
+            class="checkout-btn"
+            onclick="initiateRazorpayPayment()">
 
-        return;
+            Proceed To Pay
 
-    }
+        </button>
 
-    var options={
+    </div>
 
-        key:"rzp_live_TH1wKGPDAZVVKo",
-
-        amount:cartTotal*100,
-
-        currency:"INR",
-
-        name:"MamRaj Web Studio",
-
-        description:"Website Development Services",
-
-        image:"images/logo.png",
-
-        handler:function(response){
-
-            alert("Payment Successful!");
-
-            localStorage.removeItem("cart");
-
-            window.location.href="success.html";
-
-        },
-
-        prefill:{
-
-            name:name,
-
-            email:email,
-
-            contact:phone
-
-        },
-
-        theme:{
-
-            color:"#1E2A5A"
-
-        }
-
-    };
-
-    const rzp=new Razorpay(options);
-
-    rzp.open();
-
-}
-
-</script>
-
-</body>
-
-</html>
+</section>
