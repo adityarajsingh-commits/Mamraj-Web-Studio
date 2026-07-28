@@ -198,19 +198,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // ================= STAR RATING =================
 
-const stars = document.querySelectorAll(".star-btn");
-const ratingInput = document.getElementById("review-rating");
-const rating = document.getElementById("review-rating").value;
-if (stars.length) {
+function updateRatingSummary() {
 
-    let selectedRating = 0;
+    const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
 
-    stars.forEach((star, index) => {
+    const totalReviews = reviews.length;
 
-        star.addEventListener("mouseover", () => {
-            stars.forEach((s, i) => {
-                s.classList.toggle("active", i <= index);
-            });
+    let totalStars = 0;
+
+    reviews.forEach(review => {
+        totalStars += Number(review.rating);
+    });
+
+    const average = totalReviews
+        ? (totalStars / totalReviews).toFixed(1)
+        : "0.0";
+
+    document.getElementById("averageRating").textContent = average;
+    document.getElementById("reviewCount").textContent = totalReviews;
+
+    updateStars(average);
+}
+
+function updateStars(avg){
+
+    const stars = document.querySelectorAll(".summary-stars i");
+
+    stars.forEach((star,index)=>{
+
+        if(index < Math.round(avg)){
+            star.classList.add("active");
+        }else{
+            star.classList.remove("active");
+        }
+
+    });
+
+}
         });
 
         star.addEventListener("mouseleave", () => {
