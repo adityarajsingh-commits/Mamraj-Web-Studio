@@ -1,21 +1,24 @@
-// Import the Firebase modular SDKs
-import { initializeApp } from "FIREBASE_APP_SDK_URL";
-import { getDatabase, ref, onValue } from "FIREBASE_DATABASE_SDK_URL";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your Firebase configuration using your project context details
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY", // Replace with your active Web API Key
+  apiKey: "AIzaSyA44Ou2bM7l7m-oay-pwv-4tdmn_S0f0BM",
   authDomain: "mamraj-web-studio-1d78b.firebaseapp.com",
-  databaseURL: "https://mamraj-web-studio-1d78b-default-rtdb.firebaseio.com",
   projectId: "mamraj-web-studio-1d78b",
-  storageBucket: "mamraj-web-studio-1d78b.appspot.com",
+  storageBucket: "mamraj-web-studio-1d78b.firebasestorage.app",
   messagingSenderId: "229677264871",
-  appId: "YOUR_FIREBASE_APP_ID" // Replace with your web App ID
+  appId: "1:229677264871:web:cc3937a5733868e31c5742",
+  measurementId: "G-DSK1EM5RKL"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const analytics = getAnalytics(app);
 
 // DOM Selection
 const liveUsersEl = document.getElementById('live-users');
