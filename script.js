@@ -774,3 +774,90 @@ onclick="deleteReview('${key}')">
 `;
 
 }
+// Function to toggle Chatbot Window Visibility
+function toggleChat() {
+    const chatContainer = document.getElementById('chatContainer');
+    if (!chatContainer) return;
+
+    // Toggle display between 'flex' and 'none'
+    if (chatContainer.style.display === 'flex') {
+        chatContainer.style.display = 'none';
+    } else {
+        chatContainer.style.display = 'flex';
+        // Auto-focus input when opened
+        document.getElementById('userInput')?.focus();
+    }
+}
+
+// Function to handle Enter key press inside input field
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+// Function to Send User Message and simulate AI Response
+function sendMessage() {
+    const inputElement = document.getElementById('userInput');
+    const messagesContainer = document.getElementById('chatMessages');
+
+    if (!inputElement || !messagesContainer) return;
+
+    const userText = inputElement.value.trim();
+    if (userText === '') return;
+
+    // 1. Append User Message
+    appendMessage(userText, 'user');
+    inputElement.value = '';
+
+    // Auto-scroll to latest message
+    scrollToBottom();
+
+    // 2. Simulate AI Response (Replace this placeholder logic with API integration if needed)
+    setTimeout(() => {
+        const botResponse = getBotResponse(userText);
+        appendMessage(botResponse, 'bot');
+        scrollToBottom();
+    }, 600);
+}
+
+// Helper function to append message bubble to chat window
+function appendMessage(text, sender) {
+    const messagesContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    
+    messageDiv.classList.add('message', sender);
+    messageDiv.innerText = text;
+    
+    messagesContainer.appendChild(messageDiv);
+}
+
+// Helper function to scroll chat body to the bottom
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('chatMessages');
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+}
+
+// Simple rule-based bot responses for MamRaj Web Studio
+function getBotResponse(input) {
+    const query = input.toLowerCase();
+
+    if (query.includes('price') || query.includes('pricing') || query.includes('cost') || query.includes('plan')) {
+        return "Our web development plans start at ₹4,999 (Starter), ₹9,999 (Professional), and ₹19,999 (E-Commerce). You can view details in the Pricing Plans section!";
+    } else if (query.includes('contact') || query.includes('email') || query.includes('call') || query.includes('support')) {
+        return "You can submit your query using the Contact Us form at the bottom of the page or email us directly at adityarajsingh@mamrajwebstudio.com.";
+    } else if (query.includes('service') || query.includes('work') || query.includes('portfolio')) {
+        return "We offer Website Development, UI/UX Design, E-Commerce Solutions, and Business Growth Services. Check out our 'Our Work' section above for samples!";
+    } else if (query.includes('hello') || query.includes('hi') || query.includes('namaste') || query.includes('hey')) {
+        return "Namaste! How can I assist you with MamRaj Web Studio's services today?";
+    } else {
+        return "Thank you for reaching out! A representative from MamRaj Web Studio will assist you further. You can also leave a message in our Contact form.";
+    }
+}
+
+// Make functions globally accessible for inline HTML onclick attributes
+window.toggleChat = toggleChat;
+window.handleKeyPress = handleKeyPress;
+window.sendMessage = sendMessage;
