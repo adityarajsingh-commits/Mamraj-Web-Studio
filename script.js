@@ -774,18 +774,23 @@ onclick="deleteReview('${key}')">
 `;
 
 }
+// =========================================
+// SHIVAAY AI CHATBOT SYSTEM
+// =========================================
+
 // Function to toggle Chatbot Window Visibility
 function toggleChat() {
     const chatContainer = document.getElementById('chatContainer');
     if (!chatContainer) return;
 
-    // Toggle display between 'flex' and 'none'
-    if (chatContainer.style.display === 'flex') {
-        chatContainer.style.display = 'none';
-    } else {
-        chatContainer.style.display = 'flex';
-        // Auto-focus input when opened
+    // Check computed style to get true current display state from CSS
+    const currentDisplay = window.getComputedStyle(chatContainer).display;
+
+    if (currentDisplay === 'none') {
+        chatContainer.style.setProperty('display', 'flex', 'important');
         document.getElementById('userInput')?.focus();
+    } else {
+        chatContainer.style.setProperty('display', 'none', 'important');
     }
 }
 
@@ -813,7 +818,7 @@ function sendMessage() {
     // Auto-scroll to latest message
     scrollToBottom();
 
-    // 2. Simulate AI Response (Replace this placeholder logic with API integration if needed)
+    // 2. Simulate AI Response
     setTimeout(() => {
         const botResponse = getBotResponse(userText);
         appendMessage(botResponse, 'bot');
@@ -824,8 +829,9 @@ function sendMessage() {
 // Helper function to append message bubble to chat window
 function appendMessage(text, sender) {
     const messagesContainer = document.getElementById('chatMessages');
+    if (!messagesContainer) return;
+
     const messageDiv = document.createElement('div');
-    
     messageDiv.classList.add('message', sender);
     messageDiv.innerText = text;
     
@@ -840,7 +846,7 @@ function scrollToBottom() {
     }
 }
 
-// Simple rule-based bot responses for MamRaj Web Studio
+// Rule-based bot responses for MamRaj Web Studio
 function getBotResponse(input) {
     const query = input.toLowerCase();
 
@@ -857,7 +863,16 @@ function getBotResponse(input) {
     }
 }
 
-// Make functions globally accessible for inline HTML onclick attributes
+// Attach event listeners after DOM is loaded for fallback execution
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.querySelector('.chatbot-toggle-btn');
+    const closeBtn = document.querySelector('.close-chat-btn');
+    
+    if (toggleBtn) toggleBtn.onclick = toggleChat;
+    if (closeBtn) closeBtn.onclick = toggleChat;
+});
+
+// Expose functions globally for ES6 Module scope
 window.toggleChat = toggleChat;
 window.handleKeyPress = handleKeyPress;
 window.sendMessage = sendMessage;
